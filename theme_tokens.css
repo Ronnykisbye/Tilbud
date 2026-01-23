@@ -1,0 +1,34 @@
+/* Afsnit 01: 2026 Neon-Elegant Tokens */
+:root {
+    --bg-main: #05070a;
+    --glass-bg: rgba(26, 31, 38, 0.8);
+    --neon-cyan: #00f2ff;
+    --neon-violet: #bc13fe;
+    --neon-gold: #ffcf00; /* Til 'Bedste Pris' highlights */
+    --3d-lift: 0 10px 20px rgba(0,0,0,0.5);
+    --btn-height: 65px;
+}
+
+body {
+    background: radial-gradient(circle at top, #1a1f26 0%, #05070a 100%);
+    color: white;
+    font-family: 'Inter', system-ui, sans-serif;
+    backdrop-filter: blur(10px);
+}
+
+/* Afsnit 02: Taktile 3D Komponenter */
+.btn-main {
+    height: var(--btn-height);
+    background: linear-gradient(145deg, var(--neon-cyan), #00d4df);
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 6px 0 #008a91, 0 10px 20px rgba(0,242,255,0.3);
+    transition: all 0.1s ease;
+    font-weight: 800;
+    color: #000;
+}
+
+.btn-main:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 #008a91;
+}
