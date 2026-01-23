@@ -1,34 +1,17 @@
-<div id="app">
-    <header class="glass-header">
-        <div class="stepper-pill">TRIN <span id="step-id">1</span>/4</div>
-        <h1 id="view-title">Hvor handler vi?</h1>
-    </header>
-
-    <main id="view-port">
-        <div id="step-1" class="view active">
-            <div class="card-3d">
-                <button class="btn-main" onclick="initGPS()">📍 FIND MIG NU</button>
-                <div class="info-row">
-                    <span>Benzinpris lige nu: 12.45 kr.</span>
-                </div>
-            </div>
-            <div class="radius-control">
-                <input type="range" min="1" max="30" value="5" id="radius-slider">
-                <p>Søg indenfor <span id="km-text">5</span> km</p>
-            </div>
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="core/theme_tokens.css">
+    <link rel="stylesheet" href="components/ui_elements.css">
+    <link rel="stylesheet" href="components/wizard_views.css">
+</head>
+<body>
+    <div id="app-container">
         </div>
-        
-        <div id="step-4" class="view">
-            <div class="summary-box">
-                <div class="total-badge">Spar 142 kr.</div>
-                <p>Ved at køre 2 km ekstra sparer du 12% på din kurv.</p>
-            </div>
-            <div id="route-map"></div>
-        </div>
-    </main>
 
-    <footer class="bottom-nav">
-        <button onclick="changeStep(-1)">Tilbage</button>
-        <button class="btn-next" onclick="changeStep(1)">Næste</button>
-    </footer>
-</div>
+    <script src="data/api_engine.js"></script>
+    <script src="logic/optimizer.js"></script>
+    <script src="logic/wizard_controller.js"></script>
+</body>
+</html>
