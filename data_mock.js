@@ -1,38 +1,39 @@
-/* Afsnit 01: Sprog-pakker */
-const i18n = {
-    da: {
-        title1: "Find Butikker",
-        title2: "Vælg Varer",
-        title3: "Vælg Butikker",
-        title4: "Bedste Priser",
-        next: "NÆSTE",
-        reset: "NY SØGNING",
-        gps_searching: "Finder din by...",
-        gps_found: "📍 Du er i: "
-    },
-    en: {
-        title1: "Find Stores",
-        title2: "Select Items",
-        title3: "Select Stores",
-        title4: "Best Prices",
-        next: "NEXT",
-        reset: "NEW SEARCH",
-        gps_searching: "Locating city...",
-        gps_found: "📍 You are in: "
-    }
-};
-
-/* Afsnit 02: Globalt MockData */
 const mockData = {
-    products: [
-        { name: "Mælk", price: 12 },
-        { name: "Milk", price: 1.5 },
-        { name: "Smør", price: 25 },
-        { name: "Butter", price: 3 }
+    // Liste over byer til manuel søgning
+    cities: [
+        "København", "Aarhus", "Odense", "Aalborg", "Esbjerg", "Randers", "Kolding", "Horsens", "Vejle", "Roskilde", "Hillerød",
+        "Warszawa", "Kraków", "Łódź", "Berlin", "Hamburg", "München", "London", "Manchester", "Vilnius", "Kaunas"
     ],
+
+    // Produkter med basispriser (bruges til at simulere tilbud)
+    products: [
+        { name: "Mælk", price: 12.50 },
+        { name: "Milk", price: 12.50 },
+        { name: "Mleko", price: 12.50 },
+        { name: "Rugbrød", price: 15.00 },
+        { name: "Bread", price: 15.00 },
+        { name: "Chleb", price: 15.00 },
+        { name: "Smør", price: 22.00 },
+        { name: "Butter", price: 22.00 },
+        { name: "Masło", price: 22.00 },
+        { name: "Æg", price: 28.00 },
+        { name: "Eggs", price: 28.00 },
+        { name: "Jajka", price: 28.00 },
+        { name: "Kaffe", price: 45.00 },
+        { name: "Coffee", price: 45.00 },
+        { name: "Kawa", price: 45.00 },
+        { name: "Olie", price: 18.00 },
+        { name: "Oil", price: 18.00 },
+        { name: "Olej", price: 18.00 }
+    ],
+
+    // Butikker der findes i systemet
     stores: [
-        { id: 'rema', name: 'REMA 1000', dist: 1.2 },
-        { id: 'lidl', name: 'Lidl', dist: 0.8 },
-        { id: 'aldi', name: 'Aldi', dist: 2.5 }
+        { id: "rema", name: "REMA 1000", priceFactor: 0.95 },
+        { id: "netto", name: "Netto", priceFactor: 1.00 },
+        { id: "lidl", name: "Lidl", priceFactor: 0.92 },
+        { id: "fotex", name: "Føtex", priceFactor: 1.10 },
+        { id: "bilka", name: "Bilka", priceFactor: 1.05 },
+        { id: "biedronka", name: "Biedronka", priceFactor: 0.85 }
     ]
 };
