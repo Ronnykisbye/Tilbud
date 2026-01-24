@@ -1,69 +1,66 @@
-/* Lys Mode farver */
-body.light-mode {
-    --bg-dark: #f0f2f5;
-    --card-bg: #ffffff;
-    --text-main: #1a1f26;
-    --neon-cyan: #0077ff;
-    --3d-shadow: 0 6px 0 #0044aa;
+/* Globale variabler for nemt skift */
+body.dark-mode {
+    --bg-color: #0a0c10;
+    --text-color: #ffffff;
+    --card-bg: #1a1f26;
+    --nav-bg: #000000;
 }
 
-/* 3D App følelse */
-.btn-3d {
-    appearance: none;
-    border: none;
-    cursor: pointer;
-    transition: all 0.1s ease;
+body.light-mode {
+    --bg-color: #f0f2f5;
+    --text-color: #1a1f26;
+    --card-bg: #ffffff;
+    --nav-bg: #e0e0e0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    transition: background-color 0.3s ease;
+}
+
+/* Centrering på PC */
+#app-container {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#app {
+    width: 100%;
+    max-width: 500px; /* PC bredde */
+    height: 100vh;
+    background-color: var(--bg-color);
     position: relative;
+    box-shadow: 0 0 50px rgba(0,0,0,0.5);
+}
+
+/* 3D Knapper med dybde */
+.btn-3d {
+    background: var(--neon-cyan);
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 6px 0 #008a91;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.1s;
 }
 
 .btn-3d:active {
     transform: translateY(4px);
-    box-shadow: 0 2px 0 var(--3d-active) !important;
+    box-shadow: 0 2px 0 #008a91;
 }
 
-/* Autocomplete styling */
-.suggestions {
-    position: absolute;
-    background: var(--card-bg);
-    border-radius: 10px;
-    width: 100%;
-    z-index: 100;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-}
-
-.suggestion-item {
-    padding: 15px;
-    border-bottom: 1px solid #333;
-    cursor: pointer;
-}
-
-/* Butik kort */
-.store-item {
-    background: var(--card-bg);
-    padding: 20px;
-    border-radius: 15px;
-    margin: 10px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 2px solid transparent;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
-
-.store-item.selected {
-    border-color: var(--neon-cyan);
-    background: rgba(0, 242, 255, 0.05);
-}
-
-.mini-btn {
-    background: var(--card-bg);
-    border: none;
+/* Mini 3D knap til Tema */
+.mini-btn-3d {
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    font-size: 1.2rem;
+    border: none;
+    background: var(--card-bg);
     box-shadow: 0 4px 0 #333;
+    cursor: pointer;
 }
