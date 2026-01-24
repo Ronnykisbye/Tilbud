@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Neon-Spar 2026 - Global Edition</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="theme_tokens.css">
+    <title>Neon-Spar 2026</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark-mode">
@@ -13,62 +11,60 @@
         <div id="app-display">
             <header>
                 <div class="top-bar">
-                    <button class="nav-btn-3d" onclick="changeStep(-1)" id="back-btn" style="display:none;">←</button>
-                    <div class="center-controls">
-                        <select id="lang-select" class="mini-btn-3d language-dropdown" onchange="switchLanguage(this.value)">
+                    <button class="mini-btn-3d" id="back-btn" onclick="changeStep(-1)" style="display:none;">←</button>
+                    <div class="center-controls" style="display:flex; gap:10px;">
+                        <select id="lang-select" class="mini-btn-3d" onchange="switchLanguage(this.value)">
                             <option value="da">🇩🇰 Dansk</option>
                             <option value="pl">🇵🇱 Polski</option>
                             <option value="de">🇩🇪 Deutsch</option>
                             <option value="en">🇬🇧 English</option>
                             <option value="lt">🇱🇹 Lietuvių</option>
                         </select>
-                        <button class="mini-btn-3d theme-toggle" onclick="toggleTheme()">🌓</button>
+                        <button class="mini-btn-3d" onclick="toggleTheme()">🌓</button>
                     </div>
                 </div>
-                <div class="stepper">TRIN <span id="step-num">1</span> AF 4</div>
-                <h1 id="title">Find Butikker</h1>
-                <p id="location-display" class="status-text"></p>
+                <div class="stepper" style="margin-top:15px; font-size:0.8em; opacity:0.6;">
+                    TRIN <span id="step-num">1</span> AF 4
+                </div>
+                <h1 id="title" style="margin:5px 0;">Find Butikker</h1>
+                <p id="location-display" style="font-size:0.9em; color:var(--neon-cyan);"></p>
             </header>
 
-            <main id="content">
+            <main id="content" style="flex-grow:1; overflow-y:auto;">
                 <section id="step-1" class="step-view active">
-                    <button class="btn-3d primary neon-glow" onclick="getGPS()">📍 BRUG MIN POSITION</button>
-                    <div class="spacer">eller</div>
-                    <div class="autocomplete-container">
-                        <input type="text" id="city-search" placeholder="Indtast by..." class="input-3d" oninput="handleCityInput(this.value)">
-                        <div id="city-suggestions" class="suggestions-box"></div>
-                    </div>
+                    <button class="btn-3d" onclick="getGPS()">📍 BRUG MIN POSITION</button>
+                    <div style="text-align:center; margin:20px 0; opacity:0.5;">eller</div>
+                    <input type="text" id="city-search" placeholder="Indtast by..." class="item-input" oninput="handleCityInput(this.value)">
+                    <div id="city-suggestions" class="suggestions" style="background:var(--card-bg); border-radius:10px; margin-top:5px; display:none;"></div>
                 </section>
 
                 <section id="step-2" class="step-view">
-                    <p class="hint" id="hint-text">Hvad skal du bruge?</p>
+                    <p id="hint-text">Hvad skal du bruge?</p>
                     <div class="item-grid">
-                        <input type="text" class="input-3d item-input" placeholder="Vare 1..." oninput="handleProductInput(this)">
-                        <input type="text" class="input-3d item-input" placeholder="Vare 2..." oninput="handleProductInput(this)">
-                        <input type="text" class="input-3d item-input" placeholder="Vare 3..." oninput="handleProductInput(this)">
-                        <input type="text" class="input-3d item-input" placeholder="Vare 4..." oninput="handleProductInput(this)">
+                        <input type="text" class="item-input" placeholder="Vare 1..." oninput="handleProductInput(this)">
+                        <input type="text" class="item-input" placeholder="Vare 2..." oninput="handleProductInput(this)">
+                        <input type="text" class="item-input" placeholder="Vare 3..." oninput="handleProductInput(this)">
+                        <input type="text" class="item-input" placeholder="Vare 4..." oninput="handleProductInput(this)">
                     </div>
-                    <div id="product-suggestions" class="suggestions-box"></div>
+                    <div id="product-suggestions" class="suggestions" style="background:var(--card-bg); border-radius:10px; display:none;"></div>
                 </section>
 
                 <section id="step-3" class="step-view">
-                    <button class="btn-3d secondary" onclick="selectAllStores()" id="select-all-btn">✅ VÆLG ALLE</button>
-                    <div id="store-list" class="store-grid"></div>
+                    <button class="btn-3d" style="background:#2ea44f; box-shadow:0 5px 0 #227d3c; margin-bottom:20px;" onclick="selectAllStores()">✅ VÆLG ALLE</button>
+                    <div id="store-list"></div>
                 </section>
 
                 <section id="step-4" class="step-view">
-                    <div class="result-card-3d">
-                        <div class="cart-summary">
-                            <h3 id="basket-title">Din Kurv:</h3>
-                            <ul id="final-basket-list"></ul>
-                        </div>
-                        <div id="result-area"></div>
+                    <div class="cart-summary" style="background:rgba(255,255,255,0.05); padding:15px; border-radius:15px; margin-bottom:20px;">
+                        <h3 id="basket-title" style="margin-top:0;">Din Kurv:</h3>
+                        <ul id="final-basket-list" style="padding-left:20px; margin-bottom:0;"></ul>
                     </div>
+                    <div id="result-area"></div>
                 </section>
             </main>
 
             <nav class="bottom-nav">
-                <button onclick="handleNextAction()" class="btn-3d nav-next" id="next-btn">NÆSTE</button>
+                <button onclick="handleNextAction()" class="btn-3d" id="next-btn">NÆSTE</button>
             </nav>
         </div>
     </div>
