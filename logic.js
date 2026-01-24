@@ -1,4 +1,4 @@
-// Afsnit 01: Sprog-konfiguration (Kun én deklaration her!)
+// SPROGPAKKER - Defineres kun én gang!
 const i18n = {
     da: { titles: ["Find Butikker", "Vælg Varer", "Vælg Butikker", "Priser"], next: "NÆSTE", reset: "NY SØGNING", basket: "Din Kurv:", searching: "Scanner tilbudsaviser...", gps_status: "Finder by...", hint: "Hvad skal du bruge?" },
     pl: { titles: ["Znajdź Sklepy", "Produkty", "Sklepy", "Ceny"], next: "DALEJ", reset: "OD NOWA", basket: "Twój Koszyk:", searching: "Szukanie ofert...", gps_status: "Lokalizacja...", hint: "Czego potrzebujesz?" },
@@ -10,7 +10,7 @@ const i18n = {
 let currentStep = 1;
 let currentLang = 'da';
 
-// Afsnit 02: Kerne-funktioner
+// FUNKTIONER TIL INTERFACE
 function switchLanguage(lang) {
     currentLang = lang;
     updateUI();
@@ -50,7 +50,7 @@ function changeStep(dir) {
     }
 }
 
-// Afsnit 03: Lokation & By-søgning
+// LOKATION OG SØGNING
 function handleCityInput(val) {
     const box = document.getElementById('city-suggestions');
     if (val.length < 2) { box.style.display = 'none'; return; }
@@ -80,7 +80,7 @@ async function getGPS() {
     }, () => { display.innerText = "GPS fejl"; });
 }
 
-// Afsnit 04: Vare-håndtering & Butikker
+// VAREHÅNDTERING
 function handleProductInput(input) {
     const box = document.getElementById('product-suggestions');
     const val = input.value.toLowerCase();
