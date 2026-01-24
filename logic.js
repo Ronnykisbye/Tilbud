@@ -1,162 +1,79 @@
-let currentStep = 1;
-let currentLang = 'da';
-let basketItems = [];
-let selectedStores = [];
-
-// 1. SPROGPAKKER (Inklusive Polsk)
+// Fjern enhver dubleret deklaration af i18n øverst i filen!
 const i18n = {
-    da: {
-        titles: ["Find Butikker", "Vælg Varer", "Vælg Butikker", "Bedste Priser"],
-        next: "NÆSTE",
-        reset: "NY SØGNING",
-        hint: "Hvad skal du bruge?",
-        selectAll: "✅ VÆLG ALLE BUTIKKER",
-        basket: "Din Kurv:",
-        searching: "Søger i tilbudsaviser...",
-        gps_status: "Finder din by..."
-    },
-    en: {
-        titles: ["Find Stores", "Choose Items", "Select Stores", "Best Prices"],
-        next: "NEXT",
-        reset: "NEW SEARCH",
-        hint: "What do you need?",
-        selectAll: "✅ SELECT ALL STORES",
-        basket: "Your Basket:",
-        searching: "Searching catalogues...",
-        gps_status: "Locating city..."
-    },
-    pl: { // POLSK TILFØJET HER
-        titles: ["Znajdź Sklepy", "Wybierz Produkty", "Wybierz Sklepy", "Najlepsze Ceny"],
-        next: "DALEJ",
-        reset: "NOWE WYSZUKIWANIE",
-        hint: "Czego potrzebujesz?",
-        selectAll: "✅ WYBIERZ WSZYSTKIE SKLEPY",
-        basket: "Twój Koszyk:",
-        searching: "Przeszukiwanie gazetek...",
-        gps_status: "Lokalizowanie miasta..."
-    }
+    da: { titles: ["Find Butikker", "Vælg Varer", "Vælg Butikker", "Priser"], next: "NÆSTE", reset: "NY SØGNING", basket: "Din Kurv:", searching: "Scanner tilbudsaviser...", gps_status: "Finder by..." },
+    en: { titles: ["Find Stores", "Add Items", "Stores", "Prices"], next: "NEXT", reset: "NEW SEARCH", basket: "Your Basket:", searching: "Searching offers...", gps_status: "Locating..." },
+    pl: { titles: ["Znajdź Sklepy", "Produkty", "Sklepy", "Ceny"], next: "DALEJ", reset: "OD NOWA", basket: "Twój Koszyk:", searching: "Szukanie ofert...", gps_status: "Lokalizacja..." },
+    lt: { titles: ["Rasti Parduotuves", "Prekės", "Parduotuvės", "Kainos"], next: "TOLIAU", reset: "NAUJA PAIEŠKA", basket: "Jūsų krepšelis:", searching: "Ieškoma pasiūlymų...", gps_status: "Ieškoma miesto..." }
 };
 
-// 2. SKIFT SPROG FUNKTION
+let currentStep = 1;
+let currentLang = 'da';
+
 function switchLanguage(lang) {
     currentLang = lang;
     updateUI();
 }
 
-function updateUI() {
-    const texts = i18n[currentLang];
-    
-    // Opdater Titel og Knapper
-    document.getElementById('title').innerText = texts.titles[currentStep - 1];
-    document.getElementById('hint-text').innerText = texts.hint;
-    document.getElementById('select-all-btn').innerText = texts.selectAll;
-    document.getElementById('basket-title').innerText = texts.basket;
-    
-    const nextBtn = document.getElementById('next-btn');
-    nextBtn.innerText = (currentStep === 4) ? texts.reset : texts.next;
+function toggleTheme() {
+    document.body.classList.toggle('light-mode');
+    document.body.classList.toggle('dark-mode');
 }
 
-// 3. NAVIGATION (LÅST DESIGN)
-function changeStep(direction) {
-    const next = currentStep + direction;
-    if (next >= 1 && next <= 4) {
-        document.getElementById(`step-${currentStep}`).classList.remove('active');
-        currentStep = next;
-        document.getElementById(`step-${currentStep}`).classList.add('active');
-        document.getElementById('step-num').innerText = currentStep;
-
-        // Vis/skjul returknap
-        document.getElementById('back-btn').style.display = (currentStep > 1) ? 'block' : 'none';
-        
-        updateUI();
-
-        if (currentStep === 3) renderStores();
-        if (currentStep === 4) {
-            renderFinalBasket();
-            searchOffers();
-        }
-    }
+function updateUI() {
+    const t = i18n[currentLang];
+    document.getElementById('title').innerText = t.titles[currentStep - 1];
+    document.getElementById('next-btn').innerText = (currentStep === 4) ? t.reset : t.next;
 }
 
 function handleNextAction() {
-    if (currentStep === 4) {
-        location.reload(); // Genstart app (Ny søgning)
-    } else {
-        changeStep(1);
+    if (currentStep === 4) { location.reload(); } 
+    else { changeStep(1); }
+}
+
+function changeStep(dir) {
+    const currentView = document.getElementById(`step-${currentStep}`);
+    const nextStep = currentStep + dir;
+    const nextView = document.getElementById(`step-${nextStep}`);
+
+    if (nextView) {
+        currentView.classList.remove('active');
+        nextView.classList.add('active');
+        currentStep = nextStep;
+        document.getElementById('step-num').innerText = currentStep;
+        document.getElementById('back-btn').style.display = (currentStep > 1) ? 'block' : 'none';
+        updateUI();
+        if (currentStep === 3) renderStores();
+        if (currentStep === 4) searchOffers();
     }
 }
 
-// 4. GPS & BY-NAVN
+// Retter fejlen ved manuel indtastning af by
+function handleCityInput(val) {
+    const box = document.getElementById('city-suggestions');
+    if (val.length < 2) { box.style.display = 'none'; return; }
+    const matches = mockData.cities.filter(c => c.toLowerCase().includes(val.toLowerCase()));
+    if (matches.length > 0) {
+        box.style.display = 'block';
+        box.innerHTML = matches.map(m => `<div class="suggestion-item" onclick="selectCity('${m}')">${m}</div>`).join('');
+    }
+}
+
+function selectCity(city) {
+    document.getElementById('city-search').value = city;
+    document.getElementById('city-suggestions').style.display = 'none';
+    document.getElementById('location-display').innerText = "📍 " + city;
+}
+
 async function getGPS() {
     const display = document.getElementById('location-display');
     display.innerText = i18n[currentLang].gps_status;
-
     navigator.geolocation.getCurrentPosition(async (pos) => {
         try {
             const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&localityLanguage=${currentLang}`);
             const data = await res.json();
-            display.innerText = "📍 " + (data.city || data.locality || "OK");
-            display.style.color = "var(--neon-cyan)";
-        } catch (e) {
-            display.innerText = "📍 Fundet!";
-        }
+            const city = data.city || data.locality || "OK";
+            selectCity(city);
+        } catch (e) { display.innerText = "📍 Fundet!"; }
     });
 }
-
-// 5. AUTOSUGGEST (RETTET FEJL)
-function handleProductInput(input) {
-    const suggestions = document.getElementById('product-suggestions');
-    const query = input.value.toLowerCase();
-    
-    if (query.length < 2) {
-        suggestions.style.display = 'none';
-        return;
-    }
-
-    // Filtrer produkter fra mockData
-    const matches = mockData.products.filter(p => p.name.toLowerCase().includes(query));
-    
-    if (matches.length > 0) {
-        suggestions.style.display = 'block';
-        suggestions.innerHTML = matches.map(m => `
-            <div class="suggestion-item" onclick="selectProduct('${m.name}')">${m.name}</div>
-        `).join('');
-    }
-}
-
-function selectProduct(name) {
-    // Find det tomme felt eller det felt der sidst var i fokus
-    const inputs = document.querySelectorAll('.item-input');
-    for (let input of inputs) {
-        if (input.value === "" || name.toLowerCase().includes(input.value.toLowerCase())) {
-            input.value = name;
-            break;
-        }
-    }
-    document.getElementById('product-suggestions').style.display = 'none';
-}
-
-// 6. RESULTATER & KURV
-function renderFinalBasket() {
-    const list = document.getElementById('final-basket-list');
-    const inputs = document.querySelectorAll('.item-input');
-    basketItems = Array.from(inputs).map(i => i.value).filter(v => v !== "");
-    list.innerHTML = basketItems.map(item => `<li>🛒 ${item}</li>`).join('');
-}
-
-async function searchOffers() {
-    const resultArea = document.getElementById('result-area');
-    resultArea.innerHTML = `<p>${i18n[currentLang].searching}</p>`;
-    
-    // Simulering af API-søgning
-    setTimeout(() => {
-        let html = "";
-        basketItems.forEach(item => {
-            html += `<div class="store-item" style="border-left:4px solid var(--neon-cyan)">
-                        <b>${item}</b> - 12.50 PLN <br>
-                        <small>Biedronka / Lidl</small>
-                     </div>`;
-        });
-        resultArea.innerHTML = html;
-    }, 1200);
-}
+// ... Resten af funktionerne (handleProductInput, renderStores osv) skal beholdes fra forrige version.
