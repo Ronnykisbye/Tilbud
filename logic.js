@@ -1,14 +1,14 @@
 const i18n = {
-    da: { titles: ["Find Butikker", "Vælg Varer", "Vælg Butikker", "Priser"], next: "NÆSTE", reset: "NY SØGNING", basket: "Din Kurv:", searching: "Scanner tilbudsaviser...", gps_status: "Finder by...", hint: "Hvad skal du bruge?" },
-    pl: { titles: ["Znajdź Sklepy", "Produkty", "Sklepy", "Ceny"], next: "DALEJ", reset: "OD NOWA", basket: "Twój Koszyk:", searching: "Szukanie ofert...", gps_status: "Lokalizacja...", hint: "Czego potrzebujesz?" },
-    de: { titles: ["Läden finden", "Artikel", "Läden", "Preise"], next: "WEITER", reset: "NEUE SUCHE", basket: "Warenkorb:", searching: "Suche Angebote...", gps_status: "Suche Stadt...", hint: "Was brauchen Sie?" },
-    en: { titles: ["Find Stores", "Add Items", "Stores", "Prices"], next: "NEXT", reset: "NEW SEARCH", basket: "Your Basket:", searching: "Searching offers...", gps_status: "Locating...", hint: "What do you need?" },
-    lt: { titles: ["Rasti Parduotuves", "Prekės", "Parduotuvės", "Kainos"], next: "TOLIAU", reset: "NAUJA PAIEŠKA", basket: "Jūsų krepšelis:", searching: "Ieškoma pasiūlymų...", gps_status: "Ieškoma miesto...", hint: "Ko jums reikia?" }
+    da: { titles: ["Find Butikker", "Vælg Varer", "Vælg Butikker", "Priser"], next: "NÆSTE", reset: "NY SØGNING", basket: "Din Kurv:", searching: "Scanner tilbudsaviser...", gps_status: "Finder by...", hint: "Hvad skal du bruge?", empty_stores: "Ingen butikker valgt" },
+    pl: { titles: ["Znajdź Sklepy", "Produkty", "Sklepy", "Ceny"], next: "DALEJ", reset: "OD NOWA", basket: "Twój Koszyk:", searching: "Szukanie ofert...", gps_status: "Lokalizacja...", hint: "Czego potrzebujesz?", empty_stores: "Nie wybrano sklepów" },
+    de: { titles: ["Läden finden", "Artikel", "Läden", "Preise"], next: "WEITER", reset: "NEUE SUCHE", basket: "Warenkorb:", searching: "Suche Angebote...", gps_status: "Suche Stadt...", hint: "Was brauchen Sie?", empty_stores: "Keine Läden gewählt" },
+    en: { titles: ["Find Stores", "Add Items", "Stores", "Prices"], next: "NEXT", reset: "NEW SEARCH", basket: "Your Basket:", searching: "Searching offers...", gps_status: "Locating...", hint: "What do you need?", empty_stores: "No stores selected" },
+    lt: { titles: ["Rasti Parduotuves", "Prekės", "Parduotuvės", "Kainos"], next: "TOLIAU", reset: "NAUJA PAIEŠKA", basket: "Jūsų krepšelis:", searching: "Ieškoma pasiūlymų...", gps_status: "Ieškoma miesto...", hint: "Ko jums reikia?", empty_stores: "Nepasirinkta parduotuvių" }
 };
 
 let currentStep = 1;
 let currentLang = 'da';
-let selectedStoreIds = new Set(); // Holder styr på valgte butikker
+let selectedStoreIds = new Set();
 
 function switchLanguage(lang) {
     currentLang = lang;
@@ -21,40 +21,37 @@ function toggleTheme() {
 
 function updateUI() {
     const t = i18n[currentLang];
-    const titleElem = document.getElementById('title');
-    const nextBtn = document.getElementById('next-btn');
-    const hintElem = document.getElementById('hint-text');
-    
-    if (titleElem) titleElem.innerText = t.titles[currentStep - 1];
-    if (nextBtn) nextBtn.innerText = (currentStep === 4) ? t.reset : t.next;
-    if (hintElem) hintElem.innerText = t.hint;
+    const elements = {
+        title: document.getElementById('title'),
+        nextBtn: document.getElementById('next-btn'),
+        hint: document.getElementById('hint-text'),
+        basketTitle: document.getElementById('basket-title')
+    };
+    if (elements.title) elements.title.innerText = t.titles[currentStep - 1];
+    if (elements.nextBtn) elements.nextBtn.innerText = (currentStep === 4) ? t.reset : t.next;
+    if (elements.hint) elements.hint.innerText = t.hint;
+    if (elements.basketTitle) elements.basketTitle.innerText = t.basket;
 }
 
 function handleNextAction() {
-    if (currentStep === 4) { location.reload(); } 
-    else { changeStep(1); }
+    if (currentStep === 4) location.reload();
+    else changeStep(1);
 }
 
 function changeStep(dir) {
-    const currentView = document.getElementById(`step-${currentStep}`);
     const nextStep = currentStep + dir;
-    const nextView = document.getElementById(`step-${nextStep}`);
+    if (nextStep < 1 || nextStep > 4) return;
 
-    if (nextView && currentView) {
-        currentView.classList.remove('active');
-        nextView.classList.add('active');
-        currentStep = nextStep;
-        
-        const stepNumElem = document.getElementById('step-num');
-        const backBtn = document.getElementById('back-btn');
-        
-        if (stepNumElem) stepNumElem.innerText = currentStep;
-        if (backBtn) backBtn.style.display = (currentStep > 1) ? 'block' : 'none';
-        
-        updateUI();
-        if (currentStep === 3) renderStores();
-        if (currentStep === 4) renderFinalResults();
-    }
+    document.getElementById(`step-${currentStep}`).classList.remove('active');
+    document.getElementById(`step-${nextStep}`).classList.add('active');
+    
+    currentStep = nextStep;
+    document.getElementById('step-num').innerText = currentStep;
+    document.getElementById('back-btn').style.display = (currentStep > 1) ? 'flex' : 'none';
+    
+    updateUI();
+    if (currentStep === 3) renderStores();
+    if (currentStep === 4) renderFinalResults();
 }
 
 function handleCityInput(val) {
@@ -62,67 +59,53 @@ function handleCityInput(val) {
     if (!box) return;
     if (val.length < 2) { box.style.display = 'none'; return; }
     const matches = mockData.cities.filter(c => c.toLowerCase().includes(val.toLowerCase()));
-    if (matches.length > 0) {
-        box.style.display = 'block';
-        box.innerHTML = matches.map(m => `<div class="suggestion-item" onclick="selectCity('${m}')">${m}</div>`).join('');
-    }
+    box.innerHTML = matches.map(m => `<div class="suggestion-item" onclick="selectCity('${m}')">${m}</div>`).join('');
+    box.style.display = matches.length > 0 ? 'block' : 'none';
 }
 
 function selectCity(city) {
-    const cityInput = document.getElementById('city-search');
-    const box = document.getElementById('city-suggestions');
-    const display = document.getElementById('location-display');
-    
-    if (cityInput) cityInput.value = city;
-    if (box) box.style.display = 'none';
-    if (display) display.innerText = "📍 " + city;
+    document.getElementById('city-search').value = city;
+    document.getElementById('city-suggestions').style.display = 'none';
+    document.getElementById('location-display').innerText = "📍 " + city;
 }
 
 async function getGPS() {
     const display = document.getElementById('location-display');
-    if (!display) return;
     display.innerText = i18n[currentLang].gps_status;
     navigator.geolocation.getCurrentPosition(async (pos) => {
         try {
             const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&localityLanguage=${currentLang}`);
             const data = await res.json();
-            const city = data.city || data.locality || "OK";
-            selectCity(city);
+            selectCity(data.city || data.locality || "OK");
         } catch (e) { display.innerText = "📍 Fundet!"; }
-    }, () => { display.innerText = "GPS fejl"; });
+    }, () => display.innerText = "GPS fejl");
 }
 
 function handleProductInput(input) {
     const box = document.getElementById('product-suggestions');
-    if (!box) return;
     const val = input.value.toLowerCase();
     if (val.length < 2) { box.style.display = 'none'; return; }
     const matches = mockData.products.filter(p => p.name.toLowerCase().includes(val));
-    if (matches.length > 0) {
-        box.style.display = 'block';
-        box.innerHTML = matches.map(m => `<div class="suggestion-item" onclick="selectProduct('${m.name}')">${m.name}</div>`).join('');
-    }
+    box.innerHTML = matches.map(m => `<div class="suggestion-item" onclick="selectProduct('${m.name}')">${m.name}</div>`).join('');
+    box.style.display = matches.length > 0 ? 'block' : 'none';
 }
 
 function selectProduct(name) {
     const inputs = document.querySelectorAll('.item-input');
-    const box = document.getElementById('product-suggestions');
     for (let input of inputs) {
         if (input.value === "") { input.value = name; break; }
     }
-    if (box) box.style.display = 'none';
+    document.getElementById('product-suggestions').style.display = 'none';
 }
 
 function renderStores() {
     const container = document.getElementById('store-list');
-    if (container && mockData && mockData.stores) {
-        container.innerHTML = mockData.stores.map(s => `
-            <div class="store-item ${selectedStoreIds.has(s.id) ? 'selected' : ''}" onclick="toggleStore('${s.id}')">
-                <span>${s.name}</span>
-                <span class="check-mark">${selectedStoreIds.has(s.id) ? '✔' : ''}</span>
-            </div>
-        `).join('');
-    }
+    container.innerHTML = mockData.stores.map(s => `
+        <div class="store-item ${selectedStoreIds.has(s.id) ? 'selected' : ''}" onclick="toggleStore('${s.id}')">
+            <span>${s.name}</span>
+            <span class="check-box">${selectedStoreIds.has(s.id) ? '✔' : ''}</span>
+        </div>
+    `).join('');
 }
 
 function toggleStore(id) {
@@ -140,32 +123,30 @@ function renderFinalResults() {
     const list = document.getElementById('final-basket-list');
     const resultArea = document.getElementById('result-area');
     const items = Array.from(document.querySelectorAll('.item-input')).map(i => i.value).filter(v => v !== "");
-    
-    // Vis kurven
-    if (list) list.innerHTML = items.map(item => `<li>🛒 ${item}</li>`).join('');
+    list.innerHTML = items.map(item => `<li>🛒 ${item}</li>`).join('');
 
-    // Beregn priser pr. butik
-    let resultsHtml = "";
-    selectedStoreIds.forEach(storeId => {
+    let storeScores = Array.from(selectedStoreIds).map(storeId => {
         const store = mockData.stores.find(s => s.id === storeId);
-        let storeTotal = 0;
-        let itemsHtml = "";
-
-        items.forEach(itemName => {
+        let total = 0;
+        let details = items.map(itemName => {
             const product = mockData.products.find(p => p.name.toLowerCase() === itemName.toLowerCase());
-            const price = product ? (product.price * store.priceFactor).toFixed(2) : "?.??";
-            if (product) storeTotal += parseFloat(price);
-            itemsHtml += `<div>${itemName}: ${price} kr</div>`;
+            const price = product ? (product.price * store.priceFactor) : 0;
+            total += price;
+            return { name: itemName, price: price.toFixed(2) };
         });
+        return { name: store.name, total, details };
+    }).sort((a, b) => a.total - b.total);
 
-        resultsHtml += `
-            <div class="result-store-card">
-                <h4>${store.name}</h4>
-                <div class="store-items-detail">${itemsHtml}</div>
-                <div class="store-total">Total: ${storeTotal.toFixed(2)} kr</div>
+    resultArea.innerHTML = storeScores.map((s, idx) => `
+        <div class="result-store-card ${idx === 0 ? 'cheapest' : ''}">
+            <div class="store-header">
+                <h4>${s.name}</h4>
+                ${idx === 0 ? '<span class="badge">BILLIGST</span>' : ''}
             </div>
-        `;
-    });
-
-    if (resultArea) resultArea.innerHTML = resultsHtml || "<p>Ingen butikker valgt</p>";
+            <div class="price-details">
+                ${s.details.map(d => `<div class="price-row"><span>${d.name}</span><span>${d.price} kr</span></div>`).join('')}
+            </div>
+            <div class="total-row">Total: ${s.total.toFixed(2)} kr</div>
+        </div>
+    `).join('');
 }
