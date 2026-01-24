@@ -4,29 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Neon-Spar 2026</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="theme_tokens.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark-mode">
-    <div id="app-container"> <div id="app">
+    <div id="instrument-frame">
+        <div id="app-display">
             <header>
-                <div class="top-row">
+                <div class="top-bar">
+                    <button class="nav-btn-3d" onclick="changeStep(-1)" id="back-btn">← RETUR</button>
                     <button class="mini-btn-3d" onclick="toggleTheme()">🌓</button>
-                    <div class="stepper">TRIN <span id="step-num">1</span> AF 4</div>
                 </div>
+                <div class="stepper">TRIN <span id="step-num">1</span> AF 4</div>
                 <h1 id="title">Find Butikker</h1>
                 <p id="location-display" class="status-text"></p>
             </header>
 
             <main id="content">
-                <section id="step-1" class="step-view">
+                <section id="step-1" class="step-view active">
                     <button class="btn-3d primary" onclick="getGPS()">📍 BRUG MIN POSITION</button>
                     <div class="spacer">eller</div>
-                    <div class="autocomplete">
+                    <div class="autocomplete-container">
                         <input type="text" id="city-search" placeholder="Indtast by..." class="input-3d" oninput="suggestCity(this.value)">
-                        <div id="city-suggestions" class="suggestions"></div>
+                        <div id="city-suggestions" class="suggestions-box"></div>
                     </div>
                     <div class="range-container">
                         <label>Søgeradius: <span id="rad-val">5</span> km</label>
@@ -34,29 +34,39 @@
                     </div>
                 </section>
 
-                <section id="step-2" class="step-view" style="display:none">
+                <section id="step-2" class="step-view">
                     <p class="hint">Hvad skal du bruge?</p>
                     <div class="item-grid">
-                        <input type="text" class="input-3d item-input" placeholder="Vare 1..." oninput="handleProductInput(this)">
-                        <input type="text" class="input-3d item-input" placeholder="Vare 2..." oninput="handleProductInput(this)">
-                        <input type="text" class="input-3d item-input" placeholder="Vare 3..." oninput="handleProductInput(this)">
-                        <input type="text" class="input-3d item-input" placeholder="Vare 4..." oninput="handleProductInput(this)">
+                        <div class="autocomplete-container">
+                            <input type="text" class="input-3d item-input" placeholder="Vare 1..." oninput="suggestProduct(this, 0)">
+                            <div id="product-suggestions-0" class="suggestions-box"></div>
+                        </div>
+                        <div class="autocomplete-container">
+                            <input type="text" class="input-3d item-input" placeholder="Vare 2..." oninput="suggestProduct(this, 1)">
+                            <div id="product-suggestions-1" class="suggestions-box"></div>
+                        </div>
+                        <div class="autocomplete-container">
+                            <input type="text" class="input-3d item-input" placeholder="Vare 3..." oninput="suggestProduct(this, 2)">
+                            <div id="product-suggestions-2" class="suggestions-box"></div>
+                        </div>
+                        <div class="autocomplete-container">
+                            <input type="text" class="input-3d item-input" placeholder="Vare 4..." oninput="suggestProduct(this, 3)">
+                            <div id="product-suggestions-3" class="suggestions-box"></div>
+                        </div>
                     </div>
-                    <div id="product-suggestions" class="suggestions"></div>
                 </section>
 
-                <section id="step-3" class="step-view" style="display:none">
+                <section id="step-3" class="step-view">
                     <button class="btn-3d secondary" onclick="selectAllStores()">✅ VÆLG ALLE BUTIKKER</button>
                     <div id="store-list" class="store-grid"></div>
                 </section>
 
-                <section id="step-4" class="step-view" style="display:none">
+                <section id="step-4" class="step-view">
                     <div id="result-area"></div>
                 </section>
             </main>
 
             <nav class="bottom-nav">
-                <button onclick="changeStep(-1)" id="back-btn" class="nav-btn-3d">← RETUR</button>
                 <button onclick="changeStep(1)" class="btn-3d nav-next" id="next-btn">NÆSTE</button>
             </nav>
         </div>
