@@ -1,4 +1,4 @@
-// SPROGPAKKER - Defineres kun én gang!
+// SPROGPAKKER - Defineres kun én gang for at undgå SyntaxError
 const i18n = {
     da: { titles: ["Find Butikker", "Vælg Varer", "Vælg Butikker", "Priser"], next: "NÆSTE", reset: "NY SØGNING", basket: "Din Kurv:", searching: "Scanner tilbudsaviser...", gps_status: "Finder by...", hint: "Hvad skal du bruge?" },
     pl: { titles: ["Znajdź Sklepy", "Produkty", "Sklepy", "Ceny"], next: "DALEJ", reset: "OD NOWA", basket: "Twój Koszyk:", searching: "Szukanie ofert...", gps_status: "Lokalizacja...", hint: "Czego potrzebujesz?" },
@@ -88,7 +88,9 @@ function handleProductInput(input) {
     const matches = mockData.products.filter(p => p.name.toLowerCase().includes(val));
     if (matches.length > 0) {
         box.style.display = 'block';
-        box.innerHTML = matches.map(m => `<div class="suggestion-item" onclick="selectProduct('${m.name}')">${m.name}</div>`).join('');
+        box.innerHTML = matches.map(m => `
+            <div class="suggestion-item" onclick="selectProduct('${m.name}')">${m.name}</div>
+        `).join('');
     }
 }
 
