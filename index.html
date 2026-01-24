@@ -9,10 +9,11 @@
     <link rel="stylesheet" href="theme_tokens.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="dark-mode"> <div id="app-container"> <div id="app">
+<body class="dark-mode">
+    <div id="app-container"> <div id="app">
             <header>
                 <div class="top-row">
-                    <button id="theme-toggle" class="mini-btn-3d" onclick="toggleTheme()">🌓</button>
+                    <button class="mini-btn-3d" onclick="toggleTheme()">🌓</button>
                     <div class="stepper">TRIN <span id="step-num">1</span> AF 4</div>
                 </div>
                 <h1 id="title">Find Butikker</h1>
@@ -36,10 +37,10 @@
                 <section id="step-2" class="step-view" style="display:none">
                     <p class="hint">Hvad skal du bruge?</p>
                     <div class="item-grid">
-                        <input type="text" class="input-3d" placeholder="Vare 1..." oninput="handleProductInput(this)">
-                        <input type="text" class="input-3d" placeholder="Vare 2..." oninput="handleProductInput(this)">
-                        <input type="text" class="input-3d" placeholder="Vare 3..." oninput="handleProductInput(this)">
-                        <input type="text" class="input-3d" placeholder="Vare 4..." oninput="handleProductInput(this)">
+                        <input type="text" class="input-3d item-input" placeholder="Vare 1..." oninput="handleProductInput(this)">
+                        <input type="text" class="input-3d item-input" placeholder="Vare 2..." oninput="handleProductInput(this)">
+                        <input type="text" class="input-3d item-input" placeholder="Vare 3..." oninput="handleProductInput(this)">
+                        <input type="text" class="input-3d item-input" placeholder="Vare 4..." oninput="handleProductInput(this)">
                     </div>
                     <div id="product-suggestions" class="suggestions"></div>
                 </section>
