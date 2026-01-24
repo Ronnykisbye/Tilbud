@@ -1,19 +1,38 @@
-/* Afsnit 01: API Konfigurationer */
-const API_CONFIG = {
-    openFoodFacts: "https://world.openfoodfacts.org/cgi/search.pl",
-    fuelPrices: "https://api.kfst.dk/fuel/v1", // Hypotetisk 2026 API
-    localCacheKey: "neon_spar_data"
+/* Afsnit 01: Sprog-pakker */
+const i18n = {
+    da: {
+        title1: "Find Butikker",
+        title2: "Vælg Varer",
+        title3: "Vælg Butikker",
+        title4: "Bedste Priser",
+        next: "NÆSTE",
+        reset: "NY SØGNING",
+        gps_searching: "Finder din by...",
+        gps_found: "📍 Du er i: "
+    },
+    en: {
+        title1: "Find Stores",
+        title2: "Select Items",
+        title3: "Select Stores",
+        title4: "Best Prices",
+        next: "NEXT",
+        reset: "NEW SEARCH",
+        gps_searching: "Locating city...",
+        gps_found: "📍 You are in: "
+    }
 };
 
-/* Afsnit 02: Intelligent Pris-Logik */
-const storeData = [
-    { id: 'rema', name: 'REMA 1000', lat: 56.1, lng: 10.2, logo: '🏢' },
-    { id: 'netto', name: 'Netto', lat: 56.11, lng: 10.22, logo: '🐶' },
-    { id: 'lidl', name: 'Lidl', lat: 56.09, lng: 10.21, logo: '💛' }
-];
-
-// Funktion til at hente data fra Open Food Facts (Gratis API)
-async function fetchProductInfo(barcode) {
-    const resp = await fetch(`https://world.openfoodfacts.org/api/v0/product/${barcode}.json`);
-    return await resp.json();
-}
+/* Afsnit 02: Globalt MockData */
+const mockData = {
+    products: [
+        { name: "Mælk", price: 12 },
+        { name: "Milk", price: 1.5 },
+        { name: "Smør", price: 25 },
+        { name: "Butter", price: 3 }
+    ],
+    stores: [
+        { id: 'rema', name: 'REMA 1000', dist: 1.2 },
+        { id: 'lidl', name: 'Lidl', dist: 0.8 },
+        { id: 'aldi', name: 'Aldi', dist: 2.5 }
+    ]
+};
