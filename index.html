@@ -9,18 +9,24 @@
     <link rel="stylesheet" href="theme_tokens.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div id="app">
+<body class="dark-mode"> <div id="app">
         <header>
-            <div class="stepper">TRIN <span id="step-num">1</span> AF 4</div>
+            <div class="top-row">
+                <button id="theme-toggle" class="mini-btn" onclick="toggleTheme()">🌓</button>
+                <div class="stepper">TRIN <span id="step-num">1</span> AF 4</div>
+            </div>
             <h1 id="title">Find Butikker</h1>
+            <p id="location-display" class="status-text"></p>
         </header>
 
         <main id="content">
             <section id="step-1" class="step-view">
                 <button class="btn-3d primary" onclick="getGPS()">📍 BRUG MIN POSITION</button>
                 <div class="spacer">eller</div>
-                <input type="text" id="city-search" placeholder="Indtast by..." class="input-3d">
+                <div class="autocomplete">
+                    <input type="text" id="city-search" placeholder="Indtast by..." class="input-3d" oninput="suggestCity(this.value)">
+                    <div id="city-suggestions" class="suggestions"></div>
+                </div>
                 <div class="range-container">
                     <label>Søgeradius: <span id="rad-val">5</span> km</label>
                     <input type="range" min="1" max="50" value="5" class="radius-slider" oninput="updateRad(this.value)">
@@ -28,22 +34,43 @@
             </section>
 
             <section id="step-2" class="step-view" style="display:none">
-                <input type="text" id="item-add" placeholder="Tilføj vare..." class="input-3d">
-                <div id="basket-list"></div>
+                <p class="hint">Hvad skal du bruge?</p>
+                <div class="item-grid">
+                    <div class="autocomplete">
+                        <input type="text" class="input-3d item-input" placeholder="Vare 1..." oninput="suggestProduct(this)">
+                    </div>
+                    <div class="autocomplete">
+                        <input type="text" class="input-3d item-input" placeholder="Vare 2..." oninput="suggestProduct(this)">
+                    </div>
+                    <div class="autocomplete">
+                        <input type="text" class="input-3d item-input" placeholder="Vare 3..." oninput="suggestProduct(this)">
+                    </div>
+                    <div class="autocomplete">
+                        <input type="text" class="input-3d item-input" placeholder="Vare 4..." oninput="suggestProduct(this)">
+                    </div>
+                </div>
+                <div id="item-suggestions" class="suggestions"></div>
+            </section>
+
+            <section id="step-3" class="step-view" style="display:none">
+                <button class="btn-3d secondary" onclick="selectAllStores()">✅ VÆLG ALLE BUTIKKER</button>
+                <div id="store-list" class="store-grid">
+                    </div>
+            </section>
+
+            <section id="step-4" class="step-view" style="display:none">
+                <div id="best-price-card" class="result-3d">
+                    </div>
             </section>
         </main>
 
         <nav class="bottom-nav">
-            <button onclick="changeStep(-1)" id="back-btn" class="nav-btn">TILBAGE</button>
+            <button onclick="changeStep(-1)" id="back-btn" class="nav-btn-text">← RETUR</button>
             <button onclick="changeStep(1)" class="btn-3d nav-next" id="next-btn">NÆSTE</button>
         </nav>
     </div>
 
+    <script src="data_mock.js"></script>
     <script src="logic.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
-        }
-    </script>
 </body>
 </html>
