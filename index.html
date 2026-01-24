@@ -2,6 +2,52 @@
 <html lang="da">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Neon-Spar 2026</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div class="stepper">TRIN <span id="step-num">1</span> AF 4</div>
+            <h1 id="title">Find Butikker</h1>
+        </header>
+
+        <main id="content">
+            <section id="step-1" class="step-view">
+                <button class="btn-3d primary" onclick="getGPS()">📍 BRUG MIN POSITION</button>
+                <div class="spacer">eller</div>
+                <input type="text" id="city-search" placeholder="Indtast by..." class="input-3d">
+                <div class="range-container">
+                    <label>Søgeradius: <span id="rad-val">5</span> km</label>
+                    <input type="range" min="1" max="50" value="5" oninput="updateRad(this.value)">
+                </div>
+            </section>
+
+            <section id="step-2" class="step-view" style="display:none">
+                <input type="text" id="item-add" placeholder="Tilføj vare (f.eks. Mælk)..." class="input-3d">
+                <div id="basket-list"></div>
+            </section>
+        </main>
+
+        <nav class="bottom-nav">
+            <button onclick="changeStep(-1)" id="back-btn">TILBAGE</button>
+            <button onclick="changeStep(1)" class="btn-3d" id="next-btn">NÆSTE</button>
+        </nav>
+    </div>
+
+    <script src="logic.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
+</body>
+</html>DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="core/theme_tokens.css">
     <link rel="stylesheet" href="components/ui_elements.css">
     <link rel="stylesheet" href="components/wizard_views.css">
