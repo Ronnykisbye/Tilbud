@@ -8,6 +8,7 @@ const i18n = {
 
 let currentStep = 1;
 let currentLang = 'da';
+let selectedStoreIds = new Set(); // Holder styr på valgte butikker
 
 function switchLanguage(lang) {
     currentLang = lang;
@@ -52,7 +53,7 @@ function changeStep(dir) {
         
         updateUI();
         if (currentStep === 3) renderStores();
-        if (currentStep === 4) renderFinalBasket();
+        if (currentStep === 4) renderFinalResults();
     }
 }
 
@@ -116,15 +117,55 @@ function renderStores() {
     const container = document.getElementById('store-list');
     if (container && mockData && mockData.stores) {
         container.innerHTML = mockData.stores.map(s => `
-            <div class="store-item" onclick="this.classList.toggle('selected')">
+            <div class="store-item ${selectedStoreIds.has(s.id) ? 'selected' : ''}" onclick="toggleStore('${s.id}')">
                 <span>${s.name}</span>
+                <span class="check-mark">${selectedStoreIds.has(s.id) ? '✔' : ''}</span>
             </div>
         `).join('');
     }
 }
 
-function renderFinalBasket() {
+function toggleStore(id) {
+    if (selectedStoreIds.has(id)) selectedStoreIds.delete(id);
+    else selectedStoreIds.add(id);
+    renderStores();
+}
+
+function selectAllStores() {
+    mockData.stores.forEach(s => selectedStoreIds.add(s.id));
+    renderStores();
+}
+
+function renderFinalResults() {
     const list = document.getElementById('final-basket-list');
+    const resultArea = document.getElementById('result-area');
     const items = Array.from(document.querySelectorAll('.item-input')).map(i => i.value).filter(v => v !== "");
+    
+    // Vis kurven
     if (list) list.innerHTML = items.map(item => `<li>🛒 ${item}</li>`).join('');
+
+    // Beregn priser pr. butik
+    let resultsHtml = "";
+    selectedStoreIds.forEach(storeId => {
+        const store = mockData.stores.find(s => s.id === storeId);
+        let storeTotal = 0;
+        let itemsHtml = "";
+
+        items.forEach(itemName => {
+            const product = mockData.products.find(p => p.name.toLowerCase() === itemName.toLowerCase());
+            const price = product ? (product.price * store.priceFactor).toFixed(2) : "?.??";
+            if (product) storeTotal += parseFloat(price);
+            itemsHtml += `<div>${itemName}: ${price} kr</div>`;
+        });
+
+        resultsHtml += `
+            <div class="result-store-card">
+                <h4>${store.name}</h4>
+                <div class="store-items-detail">${itemsHtml}</div>
+                <div class="store-total">Total: ${storeTotal.toFixed(2)} kr</div>
+            </div>
+        `;
+    });
+
+    if (resultArea) resultArea.innerHTML = resultsHtml || "<p>Ingen butikker valgt</p>";
 }
