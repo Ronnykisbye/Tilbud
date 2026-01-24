@@ -1,9 +1,16 @@
 {
-  "name": "Tilbud Spar 2026",
-  "short_name": "Tilbud",
+  "name": "Neon-Spar 2026",
+  "short_name": "NeonSpar",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#0a0c10",
   "theme_color": "#00f2ff",
-  "icons": [{ "src": "icon.png", "sizes": "512x512", "type": "image/png" }]
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
 }
