@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Neon-Spar 2026 - Global Edition</title>
+    <title>Neon-Spar 2026</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="theme_tokens.css">
     <link rel="stylesheet" href="style.css">
@@ -13,19 +13,18 @@
         <div id="app-display">
             <header>
                 <div class="top-bar">
-                    <button class="nav-btn-3d" onclick="changeStep(-1)" id="back-btn" style="display:none;">← RETUR</button>
-                    
+                    <button class="nav-btn-3d" onclick="changeStep(-1)" id="back-btn" style="display:none;">←</button>
                     <div class="center-controls">
-                       <select id="lang-select" class="mini-btn-3d language-dropdown" onchange="switchLanguage(this.value)">
-    <option value="da">🇩🇰 DA</option>
-    <option value="en">🇬🇧 EN</option>
-    <option value="pl">🇵🇱 PL</option> 
-    <option value="de">🇩🇪 DE</option>
-</select>
+                        <div class="custom-select">
+                            <select id="lang-select" class="mini-btn-3d" onchange="switchLanguage(this.value)" style="width: auto; min-width: 80px;">
+                                <option value="da">🇩🇰 DA</option>
+                                <option value="en">🇬🇧 EN</option>
+                                <option value="pl">🇵🇱 PL</option>
+                                <option value="lt">🇱🇹 LT</option> </select>
+                        </div>
                         <button class="mini-btn-3d" onclick="toggleTheme()">🌓</button>
                     </div>
                 </div>
-                
                 <div class="stepper">TRIN <span id="step-num">1</span> AF 4</div>
                 <h1 id="title">Find Butikker</h1>
                 <p id="location-display" class="status-text"></p>
@@ -36,45 +35,30 @@
                     <button class="btn-3d primary" onclick="getGPS()">📍 BRUG MIN POSITION</button>
                     <div class="spacer">eller</div>
                     <div class="autocomplete-container">
-                        <input type="text" id="city-search" placeholder="Indtast by..." class="input-3d" oninput="suggestCity(this.value)">
+                        <input type="text" id="city-search" placeholder="Indtast by..." class="input-3d" oninput="handleCityInput(this.value)">
                         <div id="city-suggestions" class="suggestions-box"></div>
-                    </div>
-                    <div class="range-container">
-                        <label>Radius: <span id="rad-val">5</span> km</label>
-                        <input type="range" min="1" max="50" value="5" class="radius-slider" oninput="updateRad(this.value)">
                     </div>
                 </section>
 
                 <section id="step-2" class="step-view">
                     <p class="hint" id="hint-text">Hvad skal du bruge?</p>
                     <div class="item-grid">
-                        <div class="autocomplete-container">
-                            <input type="text" class="input-3d item-input" placeholder="Vare 1..." oninput="handleProductInput(this)">
-                        </div>
-                        <div class="autocomplete-container">
-                            <input type="text" class="input-3d item-input" placeholder="Vare 2..." oninput="handleProductInput(this)">
-                        </div>
-                        <div class="autocomplete-container">
-                            <input type="text" class="input-3d item-input" placeholder="Vare 3..." oninput="handleProductInput(this)">
-                        </div>
-                        <div class="autocomplete-container">
-                            <input type="text" class="input-3d item-input" placeholder="Vare 4..." oninput="handleProductInput(this)">
-                        </div>
+                        <input type="text" class="input-3d item-input" placeholder="Vare 1..." oninput="handleProductInput(this)">
+                        <input type="text" class="input-3d item-input" placeholder="Vare 2..." oninput="handleProductInput(this)">
+                        <input type="text" class="input-3d item-input" placeholder="Vare 3..." oninput="handleProductInput(this)">
+                        <input type="text" class="input-3d item-input" placeholder="Vare 4..." oninput="handleProductInput(this)">
                     </div>
                     <div id="product-suggestions" class="suggestions-box"></div>
                 </section>
 
                 <section id="step-3" class="step-view">
-                    <button class="btn-3d secondary" onclick="selectAllStores()" id="select-all-btn">✅ VÆLG ALLE BUTIKKER</button>
+                    <button class="btn-3d secondary" onclick="selectAllStores()" id="select-all-btn">✅ VÆLG ALLE</button>
                     <div id="store-list" class="store-grid"></div>
                 </section>
 
                 <section id="step-4" class="step-view">
-                    <div class="cart-summary">
-                        <h3 id="basket-title">Din Kurv:</h3>
-                        <ul id="final-basket-list"></ul>
-                    </div>
-                    <div id="result-area" class="result-3d"></div>
+                    <div class="cart-summary"><ul id="final-basket-list"></ul></div>
+                    <div id="result-area"></div>
                 </section>
             </main>
 
@@ -83,7 +67,6 @@
             </nav>
         </div>
     </div>
-
     <script src="data_mock.js"></script>
     <script src="logic.js"></script>
 </body>
