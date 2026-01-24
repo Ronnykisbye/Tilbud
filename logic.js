@@ -1,74 +1,62 @@
-let currentStep = 1;
-let selectedStores = [];
-
-// Skift Tema
+// Hele appen styres herfra
 function toggleTheme() {
-    document.body.classList.toggle('light-mode');
-}
-
-// Opdater Radius
-function updateRad(val) {
-    document.getElementById('rad-val').innerText = val;
-}
-
-// Navigation (Retter din fejl fra billedet)
-function changeStep(direction) {
-    const next = currentStep + direction;
-    const currentView = document.getElementById(`step-${currentStep}`);
-    const nextView = document.getElementById(`step-${next}`);
-
-    if (nextView) {
-        currentView.style.display = 'none';
-        nextView.style.display = 'block';
-        currentStep = next;
-        document.getElementById('step-num').innerText = currentStep;
-        
-        const titles = ["Find Butikker", "Vælg Varer", "Vælg Butikker", "Bedste Priser"];
-        document.getElementById('title').innerText = titles[currentStep - 1];
-
-        if(currentStep === 3) renderStores();
+    const body = document.body;
+    if (body.classList.contains('dark-mode')) {
+        body.classList.replace('dark-mode', 'light-mode');
+    } else {
+        body.classList.replace('light-mode', 'dark-mode');
     }
 }
 
-// GPS med tekst-feedback
+// Finder bynavn i stedet for kun GPS koordinater
 async function getGPS() {
-    const status = document.getElementById('location-display');
-    status.innerText = "Søger din position...";
-    
-    navigator.geolocation.getCurrentPosition(
-        (pos) => {
-            status.innerText = `📍 Du er i nærheden af: Lat ${pos.coords.latitude.toFixed(2)}, Lon ${pos.coords.longitude.toFixed(2)}`;
-            status.style.color = "var(--neon-cyan)";
-            setTimeout(() => changeStep(1), 1500);
-        },
-        () => {
-            status.innerText = "Kunne ikke finde position. Prøv manuelt.";
-            status.style.color = "red";
+    const display = document.getElementById('location-display');
+    display.innerText = "Finder din by...";
+
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+
+        try {
+            // Bruger en gratis tjeneste (BigDataCloud) til at finde bynavnet
+            const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=da`);
+            const data = await response.json();
+            const cityName = data.city || data.locality || "Ukendt by";
+            
+            display.innerText = `📍 Du er i: ${cityName}`;
+            display.style.color = "var(--neon-cyan)";
+            
+            // Gem i state og gå videre
+            setTimeout(() => changeStep(1), 1000);
+        } catch (error) {
+            display.innerText = `📍 Position fundet (${lat.toFixed(2)})`;
         }
-    );
+    });
 }
 
-// Autosuggest Byer
-function suggestCity(input) {
-    const list = document.getElementById('city-suggestions');
-    if(input.length < 2) { list.innerHTML = ""; return; }
+// Håndterer produkt-autosuggest (Retter ReferenceError)
+function handleProductInput(inputElement) {
+    const query = inputElement.value.toLowerCase();
+    const suggestionBox = document.getElementById('product-suggestions');
     
-    const matches = mockData.cities.filter(c => c.toLowerCase().includes(input.toLowerCase()));
-    list.innerHTML = matches.map(m => `<div class="suggestion-item" onclick="selectCity('${m}')">${m}</div>`).join('');
+    if (query.length < 2) {
+        suggestionBox.style.display = 'none';
+        return;
+    }
+
+    // Tjekker om mockData findes før brug (Kvalitetssikring)
+    if (typeof mockData !== 'undefined') {
+        const matches = mockData.products.filter(p => p.name.toLowerCase().includes(query));
+        renderSuggestions(matches, inputElement);
+    }
 }
 
-function selectCity(city) {
-    document.getElementById('city-search').value = city;
-    document.getElementById('city-suggestions').innerHTML = "";
-}
-
-// Butiksliste
-function renderStores() {
-    const container = document.getElementById('store-list');
-    container.innerHTML = mockData.stores.map(s => `
-        <div class="store-item" onclick="this.classList.toggle('selected')">
-            <span>${s.name}</span>
-            <input type="checkbox" checked>
+function renderSuggestions(matches, targetInput) {
+    const box = document.getElementById('product-suggestions');
+    box.style.display = 'block';
+    box.innerHTML = matches.map(m => `
+        <div class="suggestion-item" onclick="selectProduct('${m.name}', '${targetInput.id}')">
+            ${m.name}
         </div>
     `).join('');
 }
