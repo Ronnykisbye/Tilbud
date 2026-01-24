@@ -1,16 +1,14 @@
-// SPROGPAKKER - Defineres kun én gang!
 const i18n = {
     da: { titles: ["Find Butikker", "Vælg Varer", "Vælg Butikker", "Priser"], next: "NÆSTE", reset: "NY SØGNING", basket: "Din Kurv:", searching: "Scanner tilbudsaviser...", gps_status: "Finder by...", hint: "Hvad skal du bruge?" },
     pl: { titles: ["Znajdź Sklepy", "Produkty", "Sklepy", "Ceny"], next: "DALEJ", reset: "OD NOWA", basket: "Twój Koszyk:", searching: "Szukanie ofert...", gps_status: "Lokalizacja...", hint: "Czego potrzebujesz?" },
     de: { titles: ["Läden finden", "Artikel", "Läden", "Preise"], next: "WEITER", reset: "NEUE SUCHE", basket: "Warenkorb:", searching: "Suche Angebote...", gps_status: "Suche Stadt...", hint: "Was brauchen Sie?" },
     en: { titles: ["Find Stores", "Add Items", "Stores", "Prices"], next: "NEXT", reset: "NEW SEARCH", basket: "Your Basket:", searching: "Searching offers...", gps_status: "Locating...", hint: "What do you need?" },
-    lt: { titles: ["Rasti Parduotuves", "Prekės", "Parduotuvės", "Kainos"], next: "TOLIAU", reset: "NAUJA PAIEŠKA", basket: "Jūsų krepšelis:", searching: "Ieškoma pasiūlymų...", gps_status: "Ieškoma miesto...", hint: "Ko jums reikia?" }
+    lt: { titles: ["Rasti Parduotuves", "Prekės", "Parduotuvės", "Kainos"], next: "TOLIAU", reset: "NAUJA PAIEŠKA", basket: "Jūsų krepšelis:", searching: "Ieškoma pasiūlymų...", gps_status: "Ieškoma miesto..." }
 };
 
 let currentStep = 1;
 let currentLang = 'da';
 
-// FUNKTIONER TIL INTERFACE
 function switchLanguage(lang) {
     currentLang = lang;
     updateUI();
@@ -50,7 +48,6 @@ function changeStep(dir) {
     }
 }
 
-// LOKATION OG SØGNING
 function handleCityInput(val) {
     const box = document.getElementById('city-suggestions');
     if (val.length < 2) { box.style.display = 'none'; return; }
@@ -80,7 +77,6 @@ async function getGPS() {
     }, () => { display.innerText = "GPS fejl"; });
 }
 
-// VAREHÅNDTERING
 function handleProductInput(input) {
     const box = document.getElementById('product-suggestions');
     const val = input.value.toLowerCase();
