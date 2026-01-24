@@ -6,6 +6,7 @@
     <title>Neon-Spar 2026</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="theme_tokens.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -22,7 +23,7 @@
                 <input type="text" id="city-search" placeholder="Indtast by..." class="input-3d">
                 <div class="range-container">
                     <label>Søgeradius: <span id="rad-val">5</span> km</label>
-                    <input type="range" min="1" max="50" value="5" oninput="updateRad(this.value)">
+                    <input type="range" min="1" max="50" value="5" class="radius-slider" oninput="updateRad(this.value)">
                 </div>
             </section>
 
@@ -33,8 +34,8 @@
         </main>
 
         <nav class="bottom-nav">
-            <button onclick="changeStep(-1)" id="back-btn">TILBAGE</button>
-            <button onclick="changeStep(1)" class="btn-3d" id="next-btn">NÆSTE</button>
+            <button onclick="changeStep(-1)" id="back-btn" class="nav-btn">TILBAGE</button>
+            <button onclick="changeStep(1)" class="btn-3d nav-next" id="next-btn">NÆSTE</button>
         </nav>
     </div>
 
