@@ -1,4 +1,4 @@
-// Afsnit 01: Sprog-konfiguration
+// Afsnit 01: Sprog-konfiguration (Kun én deklaration her!)
 const i18n = {
     da: { titles: ["Find Butikker", "Vælg Varer", "Vælg Butikker", "Priser"], next: "NÆSTE", reset: "NY SØGNING", basket: "Din Kurv:", searching: "Scanner tilbudsaviser...", gps_status: "Finder by...", hint: "Hvad skal du bruge?" },
     pl: { titles: ["Znajdź Sklepy", "Produkty", "Sklepy", "Ceny"], next: "DALEJ", reset: "OD NOWA", basket: "Twój Koszyk:", searching: "Szukanie ofert...", gps_status: "Lokalizacja...", hint: "Czego potrzebujesz?" },
@@ -24,7 +24,8 @@ function updateUI() {
     const t = i18n[currentLang];
     document.getElementById('title').innerText = t.titles[currentStep - 1];
     document.getElementById('next-btn').innerText = (currentStep === 4) ? t.reset : t.next;
-    document.getElementById('hint-text').innerText = t.hint;
+    const hintElem = document.getElementById('hint-text');
+    if (hintElem) hintElem.innerText = t.hint;
 }
 
 function handleNextAction() {
@@ -79,7 +80,7 @@ async function getGPS() {
     }, () => { display.innerText = "GPS fejl"; });
 }
 
-// Afsnit 04: Vare-håndtering
+// Afsnit 04: Vare-håndtering & Butikker
 function handleProductInput(input) {
     const box = document.getElementById('product-suggestions');
     const val = input.value.toLowerCase();
@@ -101,15 +102,17 @@ function selectProduct(name) {
 
 function renderStores() {
     const container = document.getElementById('store-list');
-    container.innerHTML = mockData.stores.map(s => `
-        <div class="store-item" onclick="this.classList.toggle('selected')">
-            <span>${s.name}</span>
-        </div>
-    `).join('');
+    if (container) {
+        container.innerHTML = mockData.stores.map(s => `
+            <div class="store-item" onclick="this.classList.toggle('selected')">
+                <span>${s.name}</span>
+            </div>
+        `).join('');
+    }
 }
 
 function renderFinalBasket() {
     const list = document.getElementById('final-basket-list');
     const items = Array.from(document.querySelectorAll('.item-input')).map(i => i.value).filter(v => v !== "");
-    list.innerHTML = items.map(item => `<li>🛒 ${item}</li>`).join('');
+    if (list) list.innerHTML = items.map(item => `<li>🛒 ${item}</li>`).join('');
 }
