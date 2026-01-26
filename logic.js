@@ -1,10 +1,16 @@
 let currentStep = 1;
 let currentLang = localStorage.getItem('appLang') || 'da';
 let selectedStoreIds = new Set();
+let currentCountry = 'DK';
 
 function initApp() {
-    document.body.classList.toggle('light-mode', localStorage.getItem('theme') === 'light');
-    document.getElementById('lang-select').value = currentLang;
+    // Sætter tema fra hukommelse
+    if (localStorage.getItem('theme') === 'light') {
+        document.body.classList.add('light-mode');
+    }
+    // Sætter sprogvalg i dropdown
+    const langSelect = document.getElementById('lang-select');
+    if (langSelect) langSelect.value = currentLang;
     updateUI();
 }
 
@@ -40,7 +46,7 @@ function changeStep(dir) {
     
     updateUI();
     if (currentStep === 3) renderStores();
-    if (currentStep === 4) renderResults();
+    if (currentStep === 4) renderFinalResults();
 }
 
 function handleNextAction() {
