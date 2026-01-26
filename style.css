@@ -1,30 +1,22 @@
-:root {
-    --neon-cyan: #00f2ff;
-    --neon-gold: #ffcf00;
-    --bg-main: #0a0c10;
-    --card-bg: #161b22;
-    --border: #30363d;
-}
-
 body {
     background-color: var(--bg-main);
-    color: #fff;
+    color: var(--text-primary);
     font-family: 'Inter', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
+    transition: background 0.3s;
 }
 
-/* 3D Instrument Frame */
 #instrument-frame {
     background: linear-gradient(145deg, #1a1a1a, #000);
-    padding: 20px;
-    border-radius: 45px;
-    box-shadow: 20px 20px 60px #050505, -5px -5px 20px #222;
+    padding: 15px;
+    border-radius: 40px;
+    box-shadow: 20px 20px 60px rgba(0,0,0,0.5);
     width: 100%;
-    max-width: 440px;
+    max-width: 420px;
 }
 
 #app-display {
@@ -34,10 +26,20 @@ body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    border: 1px solid #222;
+    position: relative;
 }
 
-/* 3D Knapper */
+.step-view {
+    display: none;
+    padding: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.step-view.active {
+    display: block;
+}
+
 .btn-3d {
     width: 100%;
     padding: 18px;
@@ -46,33 +48,25 @@ body {
     border: none;
     border-radius: 15px;
     font-weight: 900;
-    font-size: 1.1em;
-    box-shadow: 0 6px 0 #008a91;
+    box-shadow: var(--shadow-3d);
     cursor: pointer;
-    transition: 0.1s;
-    text-transform: uppercase;
+    transition: transform 0.1s;
 }
 
 .btn-3d:active {
     transform: translateY(4px);
-    box-shadow: 0 2px 0 #008a91;
+    box-shadow: none;
 }
 
 .item-input {
     width: 100%;
     padding: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     background: var(--card-bg);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
-    color: #fff;
+    color: var(--text-primary);
     box-sizing: border-box;
-    transition: 0.3s;
-}
-
-.item-input:focus {
-    border-color: var(--neon-cyan);
-    box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);
 }
 
 .store-item {
@@ -80,37 +74,13 @@ body {
     justify-content: space-between;
     padding: 15px;
     background: var(--card-bg);
-    border: 1px solid var(--border);
+    border: 2px solid transparent;
     border-radius: 12px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     cursor: pointer;
 }
 
 .store-item.selected {
     border-color: var(--neon-cyan);
     box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
-    background: rgba(0, 242, 255, 0.05);
-}
-
-/* Resultat Kort */
-.result-store-card {
-    background: var(--card-bg);
-    padding: 15px;
-    border-radius: 15px;
-    margin-bottom: 15px;
-    border: 1px solid var(--border);
-}
-
-.result-store-card.cheapest {
-    border-color: var(--neon-gold);
-    box-shadow: 0 0 20px rgba(255, 207, 0, 0.2);
-}
-
-.badge {
-    background: var(--neon-gold);
-    color: #000;
-    padding: 2px 8px;
-    border-radius: 5px;
-    font-size: 0.7em;
-    font-weight: bold;
 }
