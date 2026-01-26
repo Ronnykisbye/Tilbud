@@ -1,7 +1,7 @@
-// SBS: Samlet sprogpakke uden dubletter for at undgå SyntaxError
+// SBS: Én definition af sprog for at undgå SyntaxError
 const i18n = {
     da: { titles: ["Find Butikker", "Vælg Varer", "Vælg Butikker", "Priser"], next: "NÆSTE", reset: "NY SØGNING", basket: "Din Kurv:", searching: "Scanner...", gps_status: "Finder by...", hint: "Hvad skal du bruge?" },
-    pl: { titles: ["Znajdź Sklepy", "Wybierz Produkty", "Wybierz Sklepy", "Najlepsze Ceny"], next: "DALEJ", reset: "OD NOWA", basket: "Twój Koszyk:", searching: "Szukanie...", gps_status: "Lokalizacja...", hint: "Czego potrzebujesz?" },
+    pl: { titles: ["Znajdź Sklepy", "Produkty", "Sklepy", "Ceny"], next: "DALEJ", reset: "OD NOWA", basket: "Twój Koszyk:", searching: "Szukanie...", gps_status: "Lokalizacja...", hint: "Czego potrzebujesz?" },
     de: { titles: ["Läden", "Artikel", "Läden", "Preise"], next: "WEITER", reset: "NEUE SUCHE", basket: "Warenkorb:", searching: "Suche...", gps_status: "Stadt...", hint: "Was brauchen Sie?" },
     en: { titles: ["Find Stores", "Add Items", "Stores", "Prices"], next: "NEXT", reset: "NEW SEARCH", basket: "Your Basket:", searching: "Searching...", gps_status: "Locating...", hint: "What do you need?" },
     lt: { titles: ["Parduotuvės", "Prekės", "Parduotuvės", "Kainos"], next: "TOLIAU", reset: "NAUJA PAIEŠKA", basket: "Krepšelis:", searching: "Ieškoma...", gps_status: "Miestas...", hint: "Ko reikia?" }
@@ -12,7 +12,6 @@ let currentLang = 'da';
 let currentCountry = 'DK';
 let selectedStoreIds = new Set();
 
-// SBS: Initialisering og UI-opdatering
 function switchLanguage(lang) {
     currentLang = lang;
     updateUI();
@@ -42,26 +41,16 @@ function changeStep(dir) {
     document.getElementById(`step-${nextStep}`).classList.add('active');
     currentStep = nextStep;
     document.getElementById('step-num').innerText = currentStep;
-    document.getElementById('back-btn').style.display = (currentStep > 1) ? 'block' : 'none';
+    const backBtn = document.getElementById('back-btn');
+    if (backBtn) backBtn.style.display = (currentStep > 1) ? 'block' : 'none';
     updateUI();
     if (currentStep === 3) renderStores();
     if (currentStep === 4) renderResults();
 }
 
-// SBS: Lokations-håndtering (Retter manuel by-fejl)
-async function getGPS() {
-    const display = document.getElementById('location-display');
-    display.innerText = i18n[currentLang].gps_status;
-    navigator.geolocation.getCurrentPosition(async (pos) => {
-        const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&localityLanguage=da`);
-        const data = await res.json();
-        currentCountry = data.countryCode || 'DK';
-        selectCity(data.city || data.locality || "OK");
-    });
-}
-
 function handleCityInput(val) {
     const box = document.getElementById('city-suggestions');
+    if (!box) return;
     if (val.length < 2) { box.style.display = 'none'; return; }
     const matches = mockData.cities.filter(c => c.toLowerCase().includes(val.toLowerCase()));
     box.innerHTML = matches.map(m => `<div class="suggestion-item" onclick="selectCity('${m}')">${m}</div>`).join('');
@@ -69,14 +58,30 @@ function handleCityInput(val) {
 }
 
 function selectCity(city) {
-    document.getElementById('city-search').value = city;
-    document.getElementById('location-display').innerText = "📍 " + city;
-    document.getElementById('city-suggestions').style.display = 'none';
+    const input = document.getElementById('city-search');
+    const display = document.getElementById('location-display');
+    if (input) input.value = city;
+    if (display) display.innerText = "📍 " + city;
+    const box = document.getElementById('city-suggestions');
+    if (box) box.style.display = 'none';
 }
 
-// SBS: Vare og Butik logik (Retter Biedronka i DK og V-markering)
+async function getGPS() {
+    const display = document.getElementById('location-display');
+    if (display) display.innerText = i18n[currentLang].gps_status;
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+        try {
+            const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&localityLanguage=da`);
+            const data = await res.json();
+            currentCountry = data.countryCode || 'DK';
+            selectCity(data.city || data.locality || "Din position");
+        } catch (e) { if (display) display.innerText = "📍 Position fundet"; }
+    });
+}
+
 function handleProductInput(input) {
     const box = document.getElementById('product-suggestions');
+    if (!box) return;
     const val = input.value.toLowerCase();
     if (val.length < 2) { box.style.display = 'none'; return; }
     const matches = mockData.products.filter(p => p.name.toLowerCase().includes(val));
@@ -89,11 +94,13 @@ function selectProduct(name) {
     for (let input of inputs) {
         if (input.value === "") { input.value = name; break; }
     }
-    document.getElementById('product-suggestions').style.display = 'none';
+    const box = document.getElementById('product-suggestions');
+    if (box) box.style.display = 'none';
 }
 
 function renderStores() {
     const container = document.getElementById('store-list');
+    if (!container) return;
     const stores = mockData.countryStores[currentCountry] || mockData.countryStores['DK'];
     container.innerHTML = stores.map(s => `
         <div class="store-item ${selectedStoreIds.has(s.id) ? 'selected' : ''}" onclick="toggleStore('${s.id}')">
@@ -115,12 +122,11 @@ function selectAllStores() {
     renderStores();
 }
 
-// SBS: Prisberegning (Retter 0.00 kr fejlen)
 function renderResults() {
     const resultArea = document.getElementById('result-area');
     const list = document.getElementById('final-basket-list');
     const items = Array.from(document.querySelectorAll('.item-input')).map(i => i.value).filter(v => v !== "");
-    list.innerHTML = items.map(item => `<li>🛒 ${item}</li>`).join('');
+    if (list) list.innerHTML = items.map(item => `<li>🛒 ${item}</li>`).join('');
 
     const stores = mockData.countryStores[currentCountry] || mockData.countryStores['DK'];
     let results = Array.from(selectedStoreIds).map(id => {
@@ -135,11 +141,13 @@ function renderResults() {
         return { name: store.name, total, details };
     }).sort((a, b) => a.total - b.total);
 
-    resultArea.innerHTML = results.map((r, i) => `
-        <div class="result-card ${i === 0 ? 'cheapest' : ''}">
-            <h4>${r.name} ${i === 0 ? '🏆 BILLIGST' : ''}</h4>
-            ${r.details.map(d => `<div class="p-row"><span>${d.name}</span><span>${d.price} kr</span></div>`).join('')}
-            <div class="total">Total: ${r.total.toFixed(2)} kr</div>
-        </div>
-    `).join('');
+    if (resultArea) {
+        resultArea.innerHTML = results.map((r, i) => `
+            <div class="result-card ${i === 0 ? 'cheapest' : ''}">
+                <h4>${r.name} ${i === 0 ? '🏆 BILLIGST' : ''}</h4>
+                ${r.details.map(d => `<div class="p-row"><span>${d.name}</span><span>${d.price} kr</span></div>`).join('')}
+                <div class="total">Total: ${r.total.toFixed(2)} kr</div>
+            </div>
+        `).join('');
+    }
 }
