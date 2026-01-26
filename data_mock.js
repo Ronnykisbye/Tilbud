@@ -8,18 +8,17 @@ const mockData = {
         ],
         PL: [
             { id: "biedronka", name: "Biedronka", priceFactor: 0.85 },
-            { id: "lidl_pl", name: "Lidl PL", priceFactor: 0.88 }
-        ],
-        // ... (DE, GB, LT butikker her)
+            { id: "zabka", name: "Żabka", priceFactor: 1.10 }
+        ]
     },
     products: [
         { name: "Arla Sødmælk", category: "Mælk", price: 13.50, amount: "1L" },
-        { name: "Mælk", category: "Mælk", price: 11.00, amount: "1L" },
-        { name: "Kærgården Smørbar", category: "Smør", price: 24.95, amount: "200g" },
-        { name: "Smørbart", category: "Smør", price: 19.00, amount: "250g" },
-        { name: "Æg", category: "Æg", price: 28.00, amount: "10 stk" },
-        { name: "Øko Æg", category: "Æg", price: 34.00, amount: "8 stk" },
-        { name: "Brød", category: "Brød", price: 15.00, amount: "500g" }
+        { name: "Sødmælk", category: "Mælk", price: 12.00, amount: "1L" },
+        { name: "Mælk", category: "Mælk", price: 11.50, amount: "1L" },
+        { name: "Kærgården Smørbar", category: "Smør", price: 22.00, amount: "200g" },
+        { name: "Smør", category: "Smør", price: 24.95, amount: "250g" },
+        { name: "Æg", category: "Æg", price: 27.55, amount: "10 stk" },
+        { name: "Bakke Æg", category: "Æg", price: 29.95, amount: "12 stk" }
     ],
-    cities: ["Hillerød", "Helsingør", "Roskilde", "København", "Warszawa", "Berlin", "London", "Vilnius"]
+    cities: ["Helsingør", "Hillerød", "Roskilde", "København", "Odense", "Aarhus", "Warszawa"]
 };
