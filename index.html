@@ -20,7 +20,7 @@
                             <option value="en">🇬🇧 English</option>
                             <option value="lt">🇱🇹 Lietuvių</option>
                         </select>
-                        <button class="mini-btn-3d theme-toggle" onclick="toggleTheme()">🌓</button>
+                        <button class="mini-btn-3d" onclick="toggleTheme()">🌓</button>
                     </div>
                 </div>
                 <div class="stepper">TRIN <span id="step-num">1</span> AF 4</div>
@@ -32,10 +32,8 @@
                 <section id="step-1" class="step-view active">
                     <button class="btn-3d" onclick="getGPS()">📍 BRUG MIN POSITION</button>
                     <div class="spacer">eller</div>
-                    <div class="autocomplete-container">
-                        <input type="text" id="city-search" placeholder="Indtast by..." class="item-input" oninput="handleCityInput(this.value)">
-                        <div id="city-suggestions" class="suggestions"></div>
-                    </div>
+                    <input type="text" id="city-search" placeholder="Indtast by..." class="item-input" oninput="handleCityInput(this.value)">
+                    <div id="city-suggestions" class="suggestions"></div>
                 </section>
 
                 <section id="step-2" class="step-view">
@@ -50,18 +48,16 @@
                 </section>
 
                 <section id="step-3" class="step-view">
-                    <button class="btn-3d all-btn" onclick="selectAllStores()">✅ VÆLG ALLE</button>
+                    <button class="btn-3d" style="background:#2ea44f;" onclick="selectAllStores()">✅ VÆLG ALLE</button>
                     <div id="store-list"></div>
                 </section>
 
                 <section id="step-4" class="step-view">
-                    <div class="result-container">
-                        <div id="basket-summary">
-                            <h3 id="basket-title">Din Kurv:</h3>
-                            <ul id="final-basket-list"></ul>
-                        </div>
-                        <div id="result-area"></div>
+                    <div id="basket-summary">
+                        <h3 id="basket-title">Din Kurv:</h3>
+                        <ul id="final-basket-list"></ul>
                     </div>
+                    <div id="result-area"></div>
                 </section>
             </main>
 
