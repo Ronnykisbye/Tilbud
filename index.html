@@ -1,69 +1,142 @@
-<!DOCTYPE html>
-<html lang="da">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Neon-Spar 2026 PRO</title>
-    <link rel="stylesheet" href="theme_tokens.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
-</head>
-<body class="dark-mode">
-    <div id="instrument-frame">
-        <div id="app-display">
-            <header style="padding: 20px; border-bottom: 1px solid var(--border-color);">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <button class="btn-3d" id="back-btn" onclick="changeStep(-1)" style="display:none; width: 50px; padding: 5px;">←</button>
-                    <div style="display: flex; gap: 10px;">
-                        <select id="lang-select" class="item-input" style="margin:0; width: 110px; padding: 5px;" onchange="switchLanguage(this.value)">
-                            <option value="da">🇩🇰 Dansk</option>
-                            <option value="pl">🇵🇱 Polski</option>
-                            <option value="en">🇬🇧 English</option>
-                            <option value="de">🇩🇪 Deutsch</option>
-                        </select>
-                        <button class="btn-3d" style="width: 50px; padding: 5px;" onclick="toggleTheme()">🌓</button>
-                    </div>
-                </div>
-                <div style="margin-top: 15px; font-size: 0.8em; opacity: 0.6;">TRIN <span id="step-num">1</span> AF 4</div>
-                <h1 id="title" style="margin: 5px 0;">Find Butikker</h1>
-                <p id="location-display" style="font-size: 0.9em; color: var(--neon-cyan); min-height: 1.2em;"></p>
-            </header>
+let currentStep = 1;
+let currentLang = localStorage.getItem('appLang') || 'da';
+let selectedStoreIds = new Set();
+let currentCountry = 'DK';
 
-            <main style="flex-grow: 1; position: relative; overflow-y: auto;">
-                <section id="step-1" class="step-view active">
-                    <button class="btn-3d" onclick="getGPS()">📍 BRUG MIN POSITION</button>
-                    <div style="text-align: center; margin: 15px; opacity: 0.5;">eller</div>
-                    <input type="text" class="item-input" id="city-search" placeholder="Indtast by..." oninput="handleCityInput(this.value)">
-                    <div id="city-suggestions" style="display:none; background: var(--card-bg); border-radius: 10px; margin-top: -10px; margin-bottom: 15px;"></div>
-                </section>
+function initApp() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') document.body.classList.add('light-mode');
+    
+    const langSelect = document.getElementById('lang-select');
+    if (langSelect) langSelect.value = currentLang;
+    updateUI();
+}
 
-                <section id="step-2" class="step-view">
-                    <p id="hint-text" style="text-align: center; opacity: 0.7; margin-bottom: 20px;">Hvad skal du bruge?</p>
-                    <input type="text" class="item-input" placeholder="Vare 1..." oninput="handleProductInput(this)">
-                    <input type="text" class="item-input" placeholder="Vare 2..." oninput="handleProductInput(this)">
-                    <input type="text" class="item-input" placeholder="Vare 3..." oninput="handleProductInput(this)">
-                    <input type="text" class="item-input" placeholder="Vare 4..." oninput="handleProductInput(this)">
-                    <div id="product-suggestions" style="display:none; background: var(--card-bg); border-radius: 10px;"></div>
-                </section>
+function switchLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('appLang', lang);
+    updateUI();
+}
 
-                <section id="step-3" class="step-view">
-                    <button class="btn-3d" style="background: var(--neon-green); box-shadow: 0 6px 0 #227d3c; margin-bottom: 20px;" onclick="selectAllStores()">✅ VÆLG ALLE</button>
-                    <div id="store-list"></div>
-                </section>
+function updateUI() {
+    const t = i18n[currentLang];
+    const title = document.getElementById('title');
+    const nextBtn = document.getElementById('next-btn');
+    const hint = document.getElementById('hint-text');
+    
+    if (title) title.innerText = t.titles[currentStep - 1];
+    if (nextBtn) nextBtn.innerText = (currentStep === 4) ? t.reset : t.next;
+    if (hint) hint.innerText = t.hint;
+}
 
-                <section id="step-4" class="step-view">
-                    <div id="result-area"></div>
-                </section>
-            </main>
+function changeStep(dir) {
+    const next = currentStep + dir;
+    if (next < 1 || next > 4) return;
+    
+    document.getElementById(`step-${currentStep}`).classList.remove('active');
+    document.getElementById(`step-${next}`).classList.add('active');
+    
+    currentStep = next;
+    const stepNum = document.getElementById('step-num');
+    if (stepNum) stepNum.innerText = currentStep;
+    
+    const backBtn = document.getElementById('back-btn');
+    if (backBtn) backBtn.style.display = (currentStep > 1) ? 'flex' : 'none';
+    
+    updateUI();
+    if (currentStep === 3) renderStores();
+    if (currentStep === 4) renderFinalResults();
+}
 
-            <footer style="padding: 20px; border-top: 1px solid var(--border-color);">
-                <button id="next-btn" onclick="handleNextAction()" class="btn-3d">NÆSTE</button>
-            </footer>
+function handleNextAction() {
+    if (currentStep === 4) location.reload();
+    else changeStep(1);
+}
+
+// LOKATION & SØGNING
+async function getGPS() {
+    const display = document.getElementById('location-display');
+    if (display) display.innerText = i18n[currentLang].gps || "Finder...";
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+        try {
+            const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&localityLanguage=${currentLang}`);
+            const data = await res.json();
+            currentCountry = data.countryCode || 'DK';
+            const city = data.city || data.locality || "OK";
+            if (display) display.innerText = "📍 " + city;
+        } catch (e) { if (display) display.innerText = "📍 Fundet!"; }
+    });
+}
+
+function handleProductInput(input) {
+    const box = document.getElementById('product-suggestions');
+    const val = input.value.toLowerCase();
+    if (!box || val.length < 1) { if(box) box.style.display = 'none'; return; }
+    
+    const matches = mockData.products.filter(p => p.name.toLowerCase().includes(val));
+    box.innerHTML = matches.map(m => `<div class="suggestion-item" onclick="selectProduct('${m.name}')">${m.name}</div>`).join('');
+    box.style.display = matches.length > 0 ? 'block' : 'none';
+}
+
+function selectProduct(name) {
+    const inputs = document.querySelectorAll('.item-input');
+    for (let input of inputs) {
+        if (input.value === "" || input.placeholder.includes("Vare")) {
+            input.value = name;
+            break;
+        }
+    }
+    document.getElementById('product-suggestions').style.display = 'none';
+}
+
+function renderStores() {
+    const container = document.getElementById('store-list');
+    if (!container) return;
+    const stores = mockData.countryStores[currentCountry] || mockData.countryStores['DK'];
+    container.innerHTML = stores.map(s => `
+        <div class="store-item ${selectedStoreIds.has(s.id) ? 'selected' : ''}" onclick="toggleStore('${s.id}')">
+            <span>${s.name}</span>
+            <span class="v-mark">${selectedStoreIds.has(s.id) ? '✔' : ''}</span>
         </div>
-    </div>
+    `).join('');
+}
 
-    <script src="data_mock.js"></script>
-    <script src="i18n_config.js"></script>
-    <script src="logic.js"></script>
-</body>
-</html>
+function toggleStore(id) {
+    if (selectedStoreIds.has(id)) selectedStoreIds.delete(id);
+    else selectedStoreIds.add(id);
+    renderStores();
+}
+
+function selectAllStores() {
+    const stores = mockData.countryStores[currentCountry] || mockData.countryStores['DK'];
+    stores.forEach(s => selectedStoreIds.add(s.id));
+    renderStores();
+}
+
+function renderFinalResults() {
+    const resultArea = document.getElementById('result-area');
+    const items = Array.from(document.querySelectorAll('.item-input')).map(i => i.value).filter(v => v !== "");
+    const stores = mockData.countryStores[currentCountry] || mockData.countryStores['DK'];
+    
+    let results = Array.from(selectedStoreIds).map(id => {
+        const store = stores.find(s => s.id === id);
+        let total = 0;
+        let details = items.map(itemName => {
+            const prod = mockData.products.find(p => itemName.toLowerCase().includes(p.name.toLowerCase()));
+            const price = prod ? (prod.price * store.priceFactor) : 0;
+            total += price;
+            return { name: itemName, price: price.toFixed(2) };
+        });
+        return { name: store.name, total, details };
+    }).sort((a, b) => a.total - b.total);
+
+    resultArea.innerHTML = results.map((r, i) => `
+        <div class="result-store-card ${i === 0 ? 'cheapest' : ''}">
+            <h4>${r.name} ${i === 0 ? '🏆' : ''}</h4>
+            ${r.details.map(d => `<div class="price-row"><span>${d.name}</span><span>${d.price} kr</span></div>`).join('')}
+            <div class="total-row">Total: ${r.total.toFixed(2)} kr</div>
+        </div>
+    `).join('');
+}
+
+window.onload = initApp;
