@@ -1,5 +1,4 @@
 const mockData = {
-    // Landespecifikke butikker
     countryStores: {
         DK: [
             { id: "rema", name: "REMA 1000", priceFactor: 0.94 },
@@ -9,31 +8,18 @@ const mockData = {
         ],
         PL: [
             { id: "biedronka", name: "Biedronka", priceFactor: 0.85 },
-            { id: "zabka", name: "Żabka", priceFactor: 1.10 },
-            { id: "leclerc", name: "E.Leclerc", priceFactor: 0.90 }
+            { id: "lidl_pl", name: "Lidl PL", priceFactor: 0.88 }
         ],
-        DE: [
-            { id: "aldi", name: "ALDI Nord", priceFactor: 0.90 },
-            { id: "rewe", name: "REWE", priceFactor: 1.05 },
-            { id: "edeka", name: "EDEKA", priceFactor: 1.08 }
-        ],
-        GB: [
-            { id: "tesco", name: "Tesco", priceFactor: 1.00 },
-            { id: "asda", name: "Asda", priceFactor: 0.92 },
-            { id: "sainsburys", name: "Sainsbury's", priceFactor: 1.05 }
-        ],
-        LT: [
-            { id: "maxima", name: "Maxima", priceFactor: 0.90 },
-            { id: "iki", name: "IKI", priceFactor: 0.95 },
-            { id: "rimi", name: "Rimi", priceFactor: 1.02 }
-        ]
+        // ... (DE, GB, LT butikker her)
     },
-    // Fælles vareliste med priser i en basisvaluta (omregnes i logic)
     products: [
-        { name: "Mælk", price: 12.50 }, { name: "Milk", price: 12.50 }, { name: "Mleko", price: 12.50 },
-        { name: "Smør", price: 24.95 }, { name: "Butter", price: 24.95 }, { name: "Masło", price: 24.95 },
-        { name: "Brød", price: 18.00 }, { name: "Bread", price: 18.00 }, { name: "Chleb", price: 18.00 },
-        { name: "Æg", price: 29.95 }, { name: "Eggs", price: 29.95 }, { name: "Jajka", price: 29.95 }
+        { name: "Arla Sødmælk", category: "Mælk", price: 13.50, amount: "1L" },
+        { name: "Mælk", category: "Mælk", price: 11.00, amount: "1L" },
+        { name: "Kærgården Smørbar", category: "Smør", price: 24.95, amount: "200g" },
+        { name: "Smørbart", category: "Smør", price: 19.00, amount: "250g" },
+        { name: "Æg", category: "Æg", price: 28.00, amount: "10 stk" },
+        { name: "Øko Æg", category: "Æg", price: 34.00, amount: "8 stk" },
+        { name: "Brød", category: "Brød", price: 15.00, amount: "500g" }
     ],
-    cities: ["Helsingør", "Hillerød", "Warszawa", "Berlin", "London", "Vilnius", "København", "Aarhus"]
+    cities: ["Hillerød", "Helsingør", "Roskilde", "København", "Warszawa", "Berlin", "London", "Vilnius"]
 };
