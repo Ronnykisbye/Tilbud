@@ -6,40 +6,48 @@
     <title>Neon-Spar 2026 PRO</title>
     <link rel="stylesheet" href="theme_tokens.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
 </head>
-<body>
+<body class="dark-mode">
     <div id="instrument-frame">
         <div id="app-display">
             <header style="padding: 20px; border-bottom: 1px solid var(--border-color);">
-                <div style="display: flex; justify-content: space-between;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
                     <button class="btn-3d" id="back-btn" onclick="changeStep(-1)" style="display:none; width: 50px; padding: 5px;">←</button>
                     <div style="display: flex; gap: 10px;">
-                        <select id="lang-select" class="item-input" style="margin:0; width: 100px;" onchange="switchLanguage(this.value)">
-                            <option value="da">🇩🇰 DA</option>
-                            <option value="pl">🇵🇱 PL</option>
-                            <option value="en">🇬🇧 EN</option>
+                        <select id="lang-select" class="item-input" style="margin:0; width: 110px; padding: 5px;" onchange="switchLanguage(this.value)">
+                            <option value="da">🇩🇰 Dansk</option>
+                            <option value="pl">🇵🇱 Polski</option>
+                            <option value="en">🇬🇧 English</option>
+                            <option value="de">🇩🇪 Deutsch</option>
                         </select>
                         <button class="btn-3d" style="width: 50px; padding: 5px;" onclick="toggleTheme()">🌓</button>
                     </div>
                 </div>
-                <div style="margin-top: 10px; font-size: 0.8em; opacity: 0.7;">TRIN <span id="step-num">1</span> AF 4</div>
+                <div style="margin-top: 15px; font-size: 0.8em; opacity: 0.6;">TRIN <span id="step-num">1</span> AF 4</div>
                 <h1 id="title" style="margin: 5px 0;">Find Butikker</h1>
+                <p id="location-display" style="font-size: 0.9em; color: var(--neon-cyan); min-height: 1.2em;"></p>
             </header>
 
-            <main style="flex-grow: 1; position: relative;">
+            <main style="flex-grow: 1; position: relative; overflow-y: auto;">
                 <section id="step-1" class="step-view active">
                     <button class="btn-3d" onclick="getGPS()">📍 BRUG MIN POSITION</button>
-                    <div style="text-align: center; margin: 15px;">eller</div>
-                    <input type="text" class="item-input" id="city-search" placeholder="Indtast by...">
+                    <div style="text-align: center; margin: 15px; opacity: 0.5;">eller</div>
+                    <input type="text" class="item-input" id="city-search" placeholder="Indtast by..." oninput="handleCityInput(this.value)">
+                    <div id="city-suggestions" style="display:none; background: var(--card-bg); border-radius: 10px; margin-top: -10px; margin-bottom: 15px;"></div>
                 </section>
 
                 <section id="step-2" class="step-view">
-                    <p id="hint-text">Hvad skal du bruge?</p>
-                    <input type="text" class="item-input" placeholder="Vare 1...">
-                    <input type="text" class="item-input" placeholder="Vare 2...">
+                    <p id="hint-text" style="text-align: center; opacity: 0.7; margin-bottom: 20px;">Hvad skal du bruge?</p>
+                    <input type="text" class="item-input" placeholder="Vare 1..." oninput="handleProductInput(this)">
+                    <input type="text" class="item-input" placeholder="Vare 2..." oninput="handleProductInput(this)">
+                    <input type="text" class="item-input" placeholder="Vare 3..." oninput="handleProductInput(this)">
+                    <input type="text" class="item-input" placeholder="Vare 4..." oninput="handleProductInput(this)">
+                    <div id="product-suggestions" style="display:none; background: var(--card-bg); border-radius: 10px;"></div>
                 </section>
 
                 <section id="step-3" class="step-view">
+                    <button class="btn-3d" style="background: var(--neon-green); box-shadow: 0 6px 0 #227d3c; margin-bottom: 20px;" onclick="selectAllStores()">✅ VÆLG ALLE</button>
                     <div id="store-list"></div>
                 </section>
 
