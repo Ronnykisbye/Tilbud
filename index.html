@@ -9,52 +9,63 @@
 <body class="dark-mode">
     <div id="instrument-frame">
         <div id="app-display">
-            <header style="padding: 20px; border-bottom: 1px solid var(--border);">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
+            <header>
+                <div class="top-bar">
                     <button class="mini-btn-3d" id="back-btn" onclick="changeStep(-1)" style="display:none;">←</button>
-                    <div style="display: flex; gap: 10px;">
+                    <div class="center-controls">
                         <select id="lang-select" class="mini-btn-3d" onchange="switchLanguage(this.value)">
-                            <option value="da">🇩🇰 DA</option>
-                            <option value="pl">🇵🇱 PL</option>
-                            <option value="de">🇩🇪 DE</option>
+                            <option value="da">🇩🇰 Dansk</option>
+                            <option value="pl">🇵🇱 Polski</option>
+                            <option value="de">🇩🇪 TY</option>
                             <option value="en">🇬🇧 GB</option>
                             <option value="lt">🇱🇹 LT</option>
                         </select>
                         <button class="mini-btn-3d" onclick="toggleTheme()">🌓</button>
                     </div>
                 </div>
-                <h1 id="title" style="margin: 15px 0 5px;">Find Butikker</h1>
-                <p id="location-display" style="font-size: 0.9em; color: var(--neon);"></p>
+                <div class="stepper">TRIN <span id="step-num">1</span> AF 4</div>
+                <h1 id="title">Find Butikker</h1>
+                <p id="location-display" class="status-text"></p>
             </header>
 
-            <main style="flex-grow: 1; overflow-y: auto;">
+            <main id="content">
                 <section id="step-1" class="step-view active">
                     <button class="btn-3d" onclick="getGPS()">📍 BRUG MIN POSITION</button>
+                    <div class="spacer">eller</div>
                     <input type="text" id="city-search" placeholder="Indtast by..." class="item-input" oninput="handleCityInput(this.value)">
-                    <div id="city-suggestions" style="display:none; background: var(--card); border-radius: 10px;"></div>
+                    <div id="city-suggestions" class="suggestions"></div>
                 </section>
 
                 <section id="step-2" class="step-view">
                     <p id="hint-text">Hvad skal du bruge?</p>
-                    <input type="text" class="item-input" placeholder="Vare 1..." oninput="handleProductInput(this)">
-                    <input type="text" class="item-input" placeholder="Vare 2..." oninput="handleProductInput(this)">
-                    <div id="product-suggestions" style="display:none; background: var(--card);"></div>
+                    <div class="item-grid">
+                        <input type="text" class="item-input" placeholder="Vare 1..." oninput="handleProductInput(this)">
+                        <input type="text" class="item-input" placeholder="Vare 2..." oninput="handleProductInput(this)">
+                        <input type="text" class="item-input" placeholder="Vare 3..." oninput="handleProductInput(this)">
+                        <input type="text" class="item-input" placeholder="Vare 4..." oninput="handleProductInput(this)">
+                    </div>
+                    <div id="product-suggestions" class="suggestions"></div>
                 </section>
 
                 <section id="step-3" class="step-view">
-                    <button class="btn-3d" onclick="selectAllStores()">✅ VÆLG ALLE</button>
+                    <button class="btn-3d all-btn" onclick="selectAllStores()">✅ VÆLG ALLE</button>
                     <div id="store-list"></div>
                 </section>
 
                 <section id="step-4" class="step-view">
-                    <ul id="final-basket-list"></ul>
-                    <div id="result-area"></div>
+                    <div class="result-container">
+                        <div id="basket-summary">
+                            <h3 id="basket-title">Din Kurv:</h3>
+                            <ul id="final-basket-list"></ul>
+                        </div>
+                        <div id="result-area"></div>
+                    </div>
                 </section>
             </main>
 
-            <footer style="padding: 20px; border-top: 1px solid var(--border);">
+            <nav class="bottom-nav">
                 <button onclick="handleNextAction()" class="btn-3d" id="next-btn">NÆSTE</button>
-            </footer>
+            </nav>
         </div>
     </div>
     <script src="data_mock.js"></script>
