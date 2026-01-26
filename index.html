@@ -3,72 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Neon-Spar 2026</title>
+    <title>Neon-Spar 2026 PRO</title>
+    <link rel="stylesheet" href="theme_tokens.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="dark-mode">
+<body>
     <div id="instrument-frame">
         <div id="app-display">
-            <header>
-                <div class="top-bar">
-                    <button class="mini-btn-3d" id="back-btn" onclick="changeStep(-1)" style="display:none;">←</button>
-                    <div class="center-controls">
-                        <select id="lang-select" class="mini-btn-3d" onchange="switchLanguage(this.value)">
-                            <option value="da">🇩🇰 Dansk</option>
-                            <option value="pl">🇵🇱 Polski</option>
-                            <option value="de">🇩🇪 Deutsch</option>
-                            <option value="en">🇬🇧 English</option>
-                            <option value="lt">🇱🇹 Lietuvių</option>
+            <header style="padding: 20px; border-bottom: 1px solid var(--border-color);">
+                <div style="display: flex; justify-content: space-between;">
+                    <button class="btn-3d" id="back-btn" onclick="changeStep(-1)" style="display:none; width: 50px; padding: 5px;">←</button>
+                    <div style="display: flex; gap: 10px;">
+                        <select id="lang-select" class="item-input" style="margin:0; width: 100px;" onchange="switchLanguage(this.value)">
+                            <option value="da">🇩🇰 DA</option>
+                            <option value="pl">🇵🇱 PL</option>
+                            <option value="en">🇬🇧 EN</option>
                         </select>
-                        <button class="mini-btn-3d" onclick="toggleTheme()">🌓</button>
+                        <button class="btn-3d" style="width: 50px; padding: 5px;" onclick="toggleTheme()">🌓</button>
                     </div>
                 </div>
-                <div class="stepper">TRIN <span id="step-num">1</span> AF 4</div>
-                <h1 id="title">Find Butikker</h1>
-                <p id="location-display" class="status-text"></p>
+                <div style="margin-top: 10px; font-size: 0.8em; opacity: 0.7;">TRIN <span id="step-num">1</span> AF 4</div>
+                <h1 id="title" style="margin: 5px 0;">Find Butikker</h1>
             </header>
 
-            <main id="content">
+            <main style="flex-grow: 1; position: relative;">
                 <section id="step-1" class="step-view active">
                     <button class="btn-3d" onclick="getGPS()">📍 BRUG MIN POSITION</button>
-                    <div class="spacer">eller</div>
-                    <input type="text" id="city-search" placeholder="Indtast by..." class="item-input" oninput="handleCityInput(this.value)">
-                    <div id="city-suggestions" class="suggestions"></div>
+                    <div style="text-align: center; margin: 15px;">eller</div>
+                    <input type="text" class="item-input" id="city-search" placeholder="Indtast by...">
                 </section>
 
                 <section id="step-2" class="step-view">
                     <p id="hint-text">Hvad skal du bruge?</p>
-                    <div class="item-grid">
-                        <input type="text" class="item-input" placeholder="Vare 1..." oninput="handleProductInput(this)">
-                        <input type="text" class="item-input" placeholder="Vare 2..." oninput="handleProductInput(this)">
-                        <input type="text" class="item-input" placeholder="Vare 3..." oninput="handleProductInput(this)">
-                        <input type="text" class="item-input" placeholder="Vare 4..." oninput="handleProductInput(this)">
-                    </div>
-                    <div id="product-suggestions" class="suggestions"></div>
+                    <input type="text" class="item-input" placeholder="Vare 1...">
+                    <input type="text" class="item-input" placeholder="Vare 2...">
                 </section>
 
                 <section id="step-3" class="step-view">
-                    <button class="btn-3d" style="background:#2ea44f;" onclick="selectAllStores()">✅ VÆLG ALLE</button>
                     <div id="store-list"></div>
                 </section>
 
                 <section id="step-4" class="step-view">
-                    <div class="result-container">
-                        <div id="basket-summary">
-                            <h3 id="basket-title">Din Kurv:</h3>
-                            <ul id="final-basket-list"></ul>
-                        </div>
-                        <div id="result-area"></div>
-                    </div>
+                    <div id="result-area"></div>
                 </section>
             </main>
 
-            <nav class="bottom-nav">
-                <button onclick="handleNextAction()" class="btn-3d" id="next-btn">NÆSTE</button>
-            </nav>
+            <footer style="padding: 20px; border-top: 1px solid var(--border-color);">
+                <button id="next-btn" onclick="handleNextAction()" class="btn-3d">NÆSTE</button>
+            </footer>
         </div>
     </div>
+
     <script src="data_mock.js"></script>
+    <script src="i18n_config.js"></script>
     <script src="logic.js"></script>
 </body>
 </html>
