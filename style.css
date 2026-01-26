@@ -1,35 +1,19 @@
-:root {
-    --neon: #00f2ff;
-    --bg: #0a0c10;
-    --card: #161b22;
-}
-
+:root { --neon: #00f2ff; --bg: #0a0c10; --card: #161b22; }
 body { background: var(--bg); color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-
 #instrument-frame { background: #000; padding: 15px; border-radius: 40px; width: 100%; max-width: 420px; box-shadow: 0 0 50px rgba(0,0,0,0.8); }
-
 #app-display { background: var(--bg); border-radius: 30px; height: 85vh; display: flex; flex-direction: column; overflow: hidden; border: 1px solid #333; }
-
 header { padding: 20px; border-bottom: 1px solid #333; }
-
 .item-input { width: 100%; padding: 15px; margin-bottom: 15px; background: var(--card); border: 1px solid #444; border-radius: 10px; color: #fff; box-sizing: border-box; }
-
 .btn-3d { width: 100%; padding: 15px; background: var(--neon); color: #000; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 0 #008a91; margin-bottom: 10px; }
-
 .store-item { padding: 15px; background: var(--card); border: 1px solid #444; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; cursor: pointer; transition: 0.3s; }
-
 .store-item.selected { border-color: var(--neon); box-shadow: 0 0 15px var(--neon); background: rgba(0, 242, 255, 0.1); }
-
 .v-mark { color: var(--neon); font-weight: bold; }
-
 .result-card { background: var(--card); padding: 15px; border-radius: 15px; margin-bottom: 15px; border: 1px solid #444; }
-
 .result-card.cheapest { border-color: #ffcf00; box-shadow: 0 0 20px rgba(255, 207, 0, 0.3); }
-
 .p-row { display: flex; justify-content: space-between; font-size: 0.9em; opacity: 0.8; margin-bottom: 5px; }
-
 .total { text-align: right; border-top: 1px solid #444; margin-top: 10px; padding-top: 10px; font-weight: bold; color: var(--neon); }
-
 .step-view { display: none; padding: 20px; flex-grow: 1; overflow-y: auto; }
-
 .step-view.active { display: block; }
+.mini-btn-3d { background: #222; border: 1px solid #444; color: #fff; border-radius: 8px; padding: 5px 10px; cursor: pointer; }
+.suggestions { background: #222; border-radius: 10px; margin-bottom: 15px; }
+.suggestion-item { padding: 10px; cursor: pointer; border-bottom: 1px solid #333; }
