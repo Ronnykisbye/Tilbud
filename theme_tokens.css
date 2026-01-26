@@ -1,34 +1,18 @@
-/* Generelle Neon farver */
 :root {
     --neon-cyan: #00f2ff;
-    --neon-violet: #bc13fe;
     --neon-gold: #ffcf00;
-}
-
-/* Dark Mode farver (standard) */
-body.dark-mode {
+    --neon-green: #2ea44f;
     --bg-main: #0a0c10;
-    --bg-card: #1a1f26;
+    --card-bg: #161b22;
     --text-primary: #ffffff;
-    --text-secondary: #8b949e;
     --border-color: #30363d;
-    --shadow-light: rgba(0,242,255,0.15);
-    --shadow-dark: rgba(0,0,0,0.5);
-    --btn-shadow: 0 6px 0 #008a91;
-    --btn-active-shadow: 0 2px 0 #008a91;
-    --frame-bg: #000;
+    --shadow-3d: 0 6px 0 #008a91;
 }
 
-/* Light Mode farver */
 body.light-mode {
     --bg-main: #f0f2f5;
-    --bg-card: #ffffff;
+    --card-bg: #ffffff;
     --text-primary: #1a1f26;
-    --text-secondary: #555;
     --border-color: #d1d1d1;
-    --shadow-light: rgba(0,119,255,0.1);
-    --shadow-dark: rgba(0,0,0,0.1);
-    --btn-shadow: 0 6px 0 #0044aa;
-    --btn-active-shadow: 0 2px 0 #0044aa;
-    --frame-bg: #e0e0e0;
+    --shadow-3d: 0 6px 0 #b0b0b0;
 }
