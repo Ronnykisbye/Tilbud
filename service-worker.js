@@ -1,5 +1,6 @@
 // AFSNIT 01 – Simpel cache til GitHub Pages
-const CACHE_NAME = "tilbudsradar-dk-v1";
+// Opdateret: manuel søgning + brugerens eget app-ikon
+const CACHE_NAME = "tilbudsradar-dk-v1-1-icon";
 const ASSETS = [
   "./",
   "index.html",
@@ -20,7 +21,11 @@ const ASSETS = [
   "data/stores.json",
   "data/locations.json",
   "data/categories.json",
-  "assets/icons/icon.svg"
+  "assets/icons/icon.svg",
+  "assets/icons/icon-128.png",
+  "assets/icons/icon-192.png",
+  "assets/icons/icon-512.png",
+  "assets/icons/icon-128.ico"
 ];
 
 self.addEventListener("install", event => {
