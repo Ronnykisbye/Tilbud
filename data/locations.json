@@ -1,0 +1,14 @@
+[
+  { "name": "Helsingør", "lat": 56.0361, "lng": 12.6136 },
+  { "name": "Snekkersten", "lat": 56.0090, "lng": 12.5890 },
+  { "name": "Espergærde", "lat": 55.9944, "lng": 12.5477 },
+  { "name": "Hornbæk", "lat": 56.0901, "lng": 12.4564 },
+  { "name": "Hillerød", "lat": 55.9300, "lng": 12.3028 },
+  { "name": "Fredensborg", "lat": 55.9756, "lng": 12.4031 },
+  { "name": "København", "lat": 55.6761, "lng": 12.5683 },
+  { "name": "Lyngby", "lat": 55.7704, "lng": 12.5038 },
+  { "name": "Roskilde", "lat": 55.6419, "lng": 12.0878 },
+  { "name": "Aarhus", "lat": 56.1629, "lng": 10.2039 },
+  { "name": "Odense", "lat": 55.4038, "lng": 10.4024 },
+  { "name": "Aalborg", "lat": 57.0488, "lng": 9.9217 }
+]

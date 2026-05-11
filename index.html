@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="da" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#070A16" />
+  <meta name="description" content="TilbudsRadar DK finder lokale tilbud efter område, radius og vare." />
+  <title>TilbudsRadar DK</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar glass-panel">
+      <a class="brand" href="#top" aria-label="TilbudsRadar DK forside">
+        <span class="brand-mark">TR</span>
+        <span>
+          <strong>TilbudsRadar DK</strong>
+          <small>Lokale tilbud · smart sammenligning</small>
+        </span>
+      </a>
+      <nav class="top-actions" aria-label="Hurtige handlinger">
+        <button class="icon-btn" id="installBtn" type="button" hidden>Installer app</button>
+        <button class="icon-btn" id="themeToggle" type="button" aria-label="Skift mellem dagmode og natmode">🌙</button>
+      </nav>
+    </header>
+
+    <main id="top" class="main-grid">
+      <section class="hero glass-panel">
+        <div class="hero-content">
+          <p class="eyebrow">Danmarks hightech tilbudsjæger</p>
+          <h1>Find den bedste pris i nærheden.</h1>
+          <p class="hero-text">Søg efter en vare, vælg område og radius, og få de bedste lokale tilbud sorteret efter pris, afstand og besparelse.</p>
+          <div class="hero-badges" aria-label="App-fordele">
+            <span>⚡ Lynhurtig demo</span>
+            <span>📍 Radius-søgning</span>
+            <span>🛒 4 bedste butikker</span>
+            <span>🌗 Dag/nat</span>
+          </div>
+        </div>
+        <aside class="radar-widget" aria-label="Radar animation">
+          <div class="radar-ring r1"></div>
+          <div class="radar-ring r2"></div>
+          <div class="radar-ring r3"></div>
+          <div class="radar-sweep"></div>
+          <div class="radar-dot d1"></div>
+          <div class="radar-dot d2"></div>
+          <div class="radar-dot d3"></div>
+          <strong>LIVE</strong>
+        </aside>
+      </section>
+
+      <section class="search-card glass-panel" aria-labelledby="searchTitle">
+        <div class="section-heading">
+          <p class="eyebrow">Søgning</p>
+          <h2 id="searchTitle">Hvad leder du efter?</h2>
+        </div>
+
+        <form id="searchForm" class="search-form">
+          <label class="field">
+            <span>Vare</span>
+            <input id="productInput" name="product" type="search" autocomplete="off" placeholder="fx kaffe, mælk, smør, kylling" required />
+          </label>
+
+          <label class="field">
+            <span>Område</span>
+            <input id="locationInput" name="location" list="locationSuggestions" placeholder="fx Helsingør, Hillerød, København" value="Helsingør" required />
+            <datalist id="locationSuggestions"></datalist>
+          </label>
+
+          <fieldset class="radius-picker">
+            <legend>Radius</legend>
+            <label><input type="radio" name="radius" value="1" /> <span>1 km</span></label>
+            <label><input type="radio" name="radius" value="3" /> <span>3 km</span></label>
+            <label><input type="radio" name="radius" value="5" checked /> <span>5 km</span></label>
+            <label><input type="radio" name="radius" value="7" /> <span>7 km</span></label>
+          </fieldset>
+
+          <div class="form-actions">
+            <button class="primary-btn" type="submit">Søg tilbud</button>
+            <button class="secondary-btn" id="gpsBtn" type="button">Brug min GPS</button>
+          </div>
+        </form>
+
+        <div class="quick-products" aria-label="Hurtige varesøgninger">
+          <button type="button" data-product="kaffe">Kaffe</button>
+          <button type="button" data-product="mælk">Mælk</button>
+          <button type="button" data-product="smør">Smør</button>
+          <button type="button" data-product="kylling">Kylling</button>
+          <button type="button" data-product="rugbrød">Rugbrød</button>
+          <button type="button" data-product="ost">Ost</button>
+        </div>
+      </section>
+
+      <section class="status-grid" aria-label="Status og statistik">
+        <article class="metric-card glass-panel">
+          <span id="metricOffers">0</span>
+          <p>fundne tilbud</p>
+        </article>
+        <article class="metric-card glass-panel">
+          <span id="metricStores">0</span>
+          <p>butikker</p>
+        </article>
+        <article class="metric-card glass-panel">
+          <span id="metricBest">–</span>
+          <p>bedste pris</p>
+        </article>
+        <article class="metric-card glass-panel">
+          <span id="metricSaved">–</span>
+          <p>mulig besparelse</p>
+        </article>
+      </section>
+
+      <section class="results-section glass-panel" aria-labelledby="resultsTitle">
+        <div class="results-top">
+          <div>
+            <p class="eyebrow">Resultater</p>
+            <h2 id="resultsTitle">De 4 bedste lokale muligheder</h2>
+          </div>
+          <div class="sort-row">
+            <label for="sortSelect">Sorter</label>
+            <select id="sortSelect">
+              <option value="smart">Smart valg</option>
+              <option value="price">Laveste pris</option>
+              <option value="distance">Korteste afstand</option>
+              <option value="saving">Største besparelse</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="messageBox" class="message-box" role="status">Søg efter en vare for at se lokale tilbud.</div>
+        <div id="resultsGrid" class="results-grid"></div>
+      </section>
+
+      <aside class="side-column">
+        <section class="glass-panel mini-panel">
+          <div class="section-heading compact">
+            <p class="eyebrow">Favoritter</p>
+            <h2>Gemte varer</h2>
+          </div>
+          <div id="favoritesList" class="chip-list empty">Ingen favoritter endnu.</div>
+        </section>
+
+        <section class="glass-panel mini-panel">
+          <div class="section-heading compact">
+            <p class="eyebrow">Historik</p>
+            <h2>Seneste søgninger</h2>
+          </div>
+          <div id="historyList" class="chip-list empty">Ingen søgninger endnu.</div>
+        </section>
+
+        <section class="glass-panel mini-panel">
+          <div class="section-heading compact">
+            <p class="eyebrow">Datakilder</p>
+            <h2>Klar til API</h2>
+          </div>
+          <p class="small-text">Version 1 bruger demo-data, så appen virker direkte på GitHub Pages. Koden er forberedt til rigtige API-kilder via <strong>js/providers</strong>.</p>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <template id="offerTemplate">
+    <article class="offer-card">
+      <div class="offer-head">
+        <span class="store-logo"></span>
+        <div>
+          <h3></h3>
+          <p class="store-meta"></p>
+        </div>
+      </div>
+      <div class="offer-product"></div>
+      <div class="price-row">
+        <strong class="price"></strong>
+        <span class="unit-price"></span>
+      </div>
+      <div class="offer-tags"></div>
+      <div class="offer-foot">
+        <button class="favorite-btn" type="button">Gem</button>
+        <span class="valid-to"></span>
+      </div>
+    </article>
+  </template>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

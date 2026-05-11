@@ -1,0 +1,31 @@
+[
+  { "id": "o001", "storeId": "netto-stjernegade", "product": "Merrild kaffe 400 g", "keywords": ["kaffe", "merrild", "formalede bønner"], "price": 34.95, "normalPrice": 49.95, "unit": "87,38 kr/kg", "validTo": "2026-05-18" },
+  { "id": "o002", "storeId": "foetex-prøvestenscentret", "product": "Peter Larsen kaffe 500 g", "keywords": ["kaffe", "peter larsen"], "price": 44.00, "normalPrice": 59.95, "unit": "88,00 kr/kg", "validTo": "2026-05-17" },
+  { "id": "o003", "storeId": "rema3000-helsingoer", "product": "BKI kaffe 400 g", "keywords": ["kaffe", "bki"], "price": 36.95, "normalPrice": 47.95, "unit": "92,38 kr/kg", "validTo": "2026-05-16" },
+  { "id": "o004", "storeId": "coop365-helsingoer", "product": "Kaffe, eget mærke 500 g", "keywords": ["kaffe"], "price": 39.00, "normalPrice": 49.00, "unit": "78,00 kr/kg", "validTo": "2026-05-20" },
+  { "id": "o005", "storeId": "lidl-helsingoer", "product": "Barissimo kaffe 500 g", "keywords": ["kaffe", "barissimo"], "price": 33.95, "normalPrice": 45.95, "unit": "67,90 kr/kg", "validTo": "2026-05-19" },
+
+  { "id": "o006", "storeId": "netto-stjernegade", "product": "Arla letmælk 1 liter", "keywords": ["mælk", "letmælk", "arla"], "price": 10.95, "normalPrice": 14.50, "unit": "10,95 kr/l", "validTo": "2026-05-14" },
+  { "id": "o007", "storeId": "foetex-prøvestenscentret", "product": "Økologisk minimælk 1 liter", "keywords": ["mælk", "minimælk", "økologisk"], "price": 12.00, "normalPrice": 16.25, "unit": "12,00 kr/l", "validTo": "2026-05-18" },
+  { "id": "o008", "storeId": "rema3000-helsingoer", "product": "Letmælk 1 liter", "keywords": ["mælk", "letmælk"], "price": 9.95, "normalPrice": 13.95, "unit": "9,95 kr/l", "validTo": "2026-05-15" },
+  { "id": "o009", "storeId": "coop365-helsingoer", "product": "Skummetmælk 1 liter", "keywords": ["mælk", "skummetmælk"], "price": 8.95, "normalPrice": 12.95, "unit": "8,95 kr/l", "validTo": "2026-05-18" },
+
+  { "id": "o010", "storeId": "netto-stjernegade", "product": "Lurpak smør 200 g", "keywords": ["smør", "lurpak"], "price": 19.95, "normalPrice": 29.95, "unit": "99,75 kr/kg", "validTo": "2026-05-18" },
+  { "id": "o011", "storeId": "foetex-prøvestenscentret", "product": "Kærgården 200 g", "keywords": ["smør", "kærgården", "smørbar"], "price": 16.95, "normalPrice": 24.95, "unit": "84,75 kr/kg", "validTo": "2026-05-17" },
+  { "id": "o012", "storeId": "lidl-helsingoer", "product": "Dansk smør 250 g", "keywords": ["smør"], "price": 18.95, "normalPrice": 27.95, "unit": "75,80 kr/kg", "validTo": "2026-05-16" },
+
+  { "id": "o013", "storeId": "foetex-prøvestenscentret", "product": "Kyllingebryst 450 g", "keywords": ["kylling", "kyllingebryst"], "price": 39.95, "normalPrice": 54.95, "unit": "88,78 kr/kg", "validTo": "2026-05-18" },
+  { "id": "o014", "storeId": "rema3000-helsingoer", "product": "Kyllingeinderfilet 400 g", "keywords": ["kylling", "inderfilet"], "price": 34.95, "normalPrice": 49.95, "unit": "87,38 kr/kg", "validTo": "2026-05-15" },
+  { "id": "o015", "storeId": "coop365-helsingoer", "product": "Hel fersk kylling", "keywords": ["kylling", "hel kylling"], "price": 49.00, "normalPrice": 69.00, "unit": "ca. 40,83 kr/kg", "validTo": "2026-05-19" },
+  { "id": "o016", "storeId": "lidl-helsingoer", "product": "Kyllingelår 1 kg", "keywords": ["kylling", "kyllingelår"], "price": 29.95, "normalPrice": 44.95, "unit": "29,95 kr/kg", "validTo": "2026-05-20" },
+
+  { "id": "o017", "storeId": "netto-stjernegade", "product": "Rugbrød solsikke", "keywords": ["rugbrød", "brød"], "price": 12.95, "normalPrice": 18.95, "unit": "1 stk", "validTo": "2026-05-14" },
+  { "id": "o018", "storeId": "superbrugsen-snekkersten", "product": "Bagerens rugbrød", "keywords": ["rugbrød", "brød"], "price": 17.95, "normalPrice": 26.95, "unit": "1 stk", "validTo": "2026-05-17" },
+  { "id": "o019", "storeId": "foetex-prøvestenscentret", "product": "Skæreost 45+ 500 g", "keywords": ["ost", "skæreost"], "price": 39.95, "normalPrice": 54.95, "unit": "79,90 kr/kg", "validTo": "2026-05-18" },
+  { "id": "o020", "storeId": "lidl-helsingoer", "product": "Danbo ost 500 g", "keywords": ["ost", "danbo"], "price": 34.95, "normalPrice": 49.95, "unit": "69,90 kr/kg", "validTo": "2026-05-20" },
+
+  { "id": "o021", "storeId": "netto-hilleroed", "product": "Merrild kaffe 400 g", "keywords": ["kaffe", "merrild"], "price": 35.95, "normalPrice": 49.95, "unit": "89,88 kr/kg", "validTo": "2026-05-18" },
+  { "id": "o022", "storeId": "bilka-hilleroed", "product": "Kyllingebryst 900 g", "keywords": ["kylling", "kyllingebryst"], "price": 69.00, "normalPrice": 89.00, "unit": "76,67 kr/kg", "validTo": "2026-05-19" },
+  { "id": "o023", "storeId": "netto-koebenhavn", "product": "Kaffe 500 g", "keywords": ["kaffe"], "price": 32.95, "normalPrice": 44.95, "unit": "65,90 kr/kg", "validTo": "2026-05-18" },
+  { "id": "o024", "storeId": "irma-koebenhavn-demo", "product": "Økologisk mælk 1 liter", "keywords": ["mælk", "økologisk"], "price": 11.95, "normalPrice": 15.95, "unit": "11,95 kr/l", "validTo": "2026-05-16" }
+]

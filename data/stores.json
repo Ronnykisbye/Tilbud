@@ -1,0 +1,12 @@
+[
+  { "id": "netto-stjernegade", "name": "Netto Stjernegade", "chain": "Netto", "address": "Stjernegade 15, 3000 Helsingør", "lat": 56.0362, "lng": 12.6124 },
+  { "id": "foetex-prøvestenscentret", "name": "føtex Prøvestenscentret", "chain": "føtex", "address": "Prøvestensvej 10, 3000 Helsingør", "lat": 56.0325, "lng": 12.5944 },
+  { "id": "rema3000-helsingoer", "name": "REMA 1000 Helsingør", "chain": "REMA 1000", "address": "Blichersvej 1, 3000 Helsingør", "lat": 56.0407, "lng": 12.6002 },
+  { "id": "coop365-helsingoer", "name": "Coop 365 Helsingør", "chain": "Coop 365", "address": "Gurrevej 90, 3000 Helsingør", "lat": 56.0296, "lng": 12.5876 },
+  { "id": "lidl-helsingoer", "name": "Lidl Helsingør", "chain": "Lidl", "address": "Klostermosevej 101, 3000 Helsingør", "lat": 56.0252, "lng": 12.5929 },
+  { "id": "superbrugsen-snekkersten", "name": "SuperBrugsen Snekkersten", "chain": "SuperBrugsen", "address": "Nørrevej 52, 3070 Snekkersten", "lat": 56.0089, "lng": 12.5891 },
+  { "id": "netto-hilleroed", "name": "Netto Hillerød", "chain": "Netto", "address": "Slotsgade 42, 3400 Hillerød", "lat": 55.9292, "lng": 12.3047 },
+  { "id": "bilka-hilleroed", "name": "Bilka Hillerød", "chain": "Bilka", "address": "SlotsArkaderne, 3400 Hillerød", "lat": 55.9275, "lng": 12.3019 },
+  { "id": "irma-koebenhavn-demo", "name": "City Marked København", "chain": "DemoMarkt", "address": "Nørreport, 1360 København", "lat": 55.6838, "lng": 12.5717 },
+  { "id": "netto-koebenhavn", "name": "Netto Nørreport", "chain": "Netto", "address": "Nørre Voldgade, 1358 København", "lat": 55.6819, "lng": 12.5725 }
+]

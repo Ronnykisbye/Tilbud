@@ -1,0 +1,5 @@
+[
+  { "name": "Dagligvarer", "keywords": ["mælk", "kaffe", "smør", "ost", "rugbrød", "kylling"] },
+  { "name": "Basisvarer", "keywords": ["pasta", "ris", "mel", "sukker", "olie"] },
+  { "name": "Frugt og grønt", "keywords": ["æbler", "bananer", "tomater", "kartofler"] }
+]
