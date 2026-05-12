@@ -1,18 +1,20 @@
-// AFSNIT 01 – Tema
-import { APP_CONFIG } from "./config.js";
-import { readStorage, writeStorage } from "./storage.js";
+// AFSNIT 01 – Dag/nat-mode
+import { getTheme, setTheme } from "./storage.js";
 
-export function initTheme(button) {
-  const saved = readStorage(APP_CONFIG.storageKeys.theme, APP_CONFIG.defaultTheme);
-  setTheme(saved, button);
-  button.addEventListener("click", () => {
-    const current = document.documentElement.dataset.theme || APP_CONFIG.defaultTheme;
-    setTheme(current === "dark" ? "light" : "dark", button);
+export function initTheme() {
+  const theme = getTheme();
+  document.documentElement.dataset.theme = theme;
+  updateThemeButton(theme);
+
+  document.querySelector("#themeToggle")?.addEventListener("click", () => {
+    const current = document.documentElement.dataset.theme === "light" ? "dark" : "light";
+    document.documentElement.dataset.theme = current;
+    setTheme(current);
+    updateThemeButton(current);
   });
 }
 
-export function setTheme(theme, button) {
-  document.documentElement.dataset.theme = theme;
-  writeStorage(APP_CONFIG.storageKeys.theme, theme);
-  if (button) button.textContent = theme === "dark" ? "🌙" : "☀️";
+function updateThemeButton(theme) {
+  const btn = document.querySelector("#themeToggle");
+  if (btn) btn.textContent = theme === "light" ? "☀️" : "🌙";
 }

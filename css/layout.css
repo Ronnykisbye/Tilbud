@@ -1,125 +1,189 @@
-/* AFSNIT 01 – App-layout */
+/* AFSNIT 01 – App shell */
 .app-shell {
-  width: min(1440px, calc(100% - 28px));
-  margin: 0 auto;
-  padding: 18px 0 44px;
+  width: min(1180px, calc(100% - 32px));
+  margin: 10px auto 42px;
 }
 
 .topbar {
   position: sticky;
-  top: 12px;
-  z-index: 30;
+  top: 8px;
+  z-index: 10;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 14px 16px;
-  border-radius: var(--radius-xl);
-}
-
-.brand {
-  display: inline-flex;
   align-items: center;
   gap: 12px;
-  color: var(--text);
-  text-decoration: none;
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: rgba(8, 16, 36, .78);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow);
 }
 
-.brand-mark {
-  display: grid;
-  place-items: center;
-  width: 46px;
-  height: 46px;
-  border-radius: 16px;
-  color: #00111a;
-  background: linear-gradient(135deg, var(--primary), var(--primary-2));
-  font-weight: 950;
-  box-shadow: 0 0 22px color-mix(in srgb, var(--primary) 45%, transparent);
+html[data-theme="light"] .topbar { background: rgba(255,255,255,.78); }
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.brand small { display: block; color: var(--muted); margin-top: 2px; }
-.top-actions { display: flex; gap: 10px; align-items: center; }
-
-.main-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 340px;
-  gap: 18px;
-  margin-top: 18px;
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  box-shadow: 0 0 22px rgba(39,255,210,.45);
 }
 
-.hero, .search-card, .results-section, .mini-panel {
-  border-radius: var(--radius-xl);
-  padding: 22px;
+.brand span {
+  display: block;
+  color: var(--muted);
+  font-size: .78rem;
+}
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* AFSNIT 02 – Kort og grid */
+.card {
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
 .hero {
-  grid-column: 1 / -1;
+  margin-top: 16px;
+  padding: clamp(22px, 4vw, 42px);
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 280px;
+  grid-template-columns: 1fr 230px;
   gap: 22px;
   overflow: hidden;
 }
 
 .hero h1 {
-  max-width: 780px;
-  margin: 0;
-  font-size: clamp(2.2rem, 6vw, 5rem);
-  line-height: 0.95;
-  letter-spacing: -0.06em;
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1.02;
+  margin: 0 0 12px;
+  letter-spacing: -0.055em;
 }
 
-.hero-text {
-  max-width: 720px;
-  color: var(--muted);
-  font-size: 1.08rem;
-  line-height: 1.7;
-}
+.hero p { max-width: 720px; }
 
-
-.search-card { align-self: start; }
-.status-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; grid-column: 1 / 2; }
-.results-section { grid-column: 1 / 2; }
-.side-column { grid-row: 3 / span 2; grid-column: 2 / 3; display: grid; gap: 18px; align-self: start; }
-
-.section-heading h2, .results-top h2 { margin: 0; font-size: 1.6rem; letter-spacing: -0.03em; }
-.section-heading.compact h2 { font-size: 1.2rem; }
-
-.results-top { display: flex; justify-content: space-between; gap: 18px; align-items: end; margin-bottom: 16px; }
-.results-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 16px; }
-
-/* AFSNIT 02 – Radar */
-.radar-widget {
-  position: relative;
-  min-height: 250px;
-  border-radius: 50%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--primary) 16%, transparent), transparent 66%);
-  border: 1px solid var(--line);
-  overflow: hidden;
+.grid {
   display: grid;
-  place-items: center;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 18px;
+  margin-top: 18px;
 }
-.radar-widget strong { position: relative; z-index: 4; color: var(--primary-2); letter-spacing: 0.18em; }
-.radar-ring { position: absolute; inset: 14%; border: 1px solid color-mix(in srgb, var(--primary) 35%, transparent); border-radius: 50%; }
-.radar-ring.r2 { inset: 28%; }
-.radar-ring.r3 { inset: 42%; }
-.radar-sweep { position: absolute; width: 50%; height: 50%; left: 50%; top: 0; transform-origin: 0 100%; background: linear-gradient(45deg, color-mix(in srgb, var(--primary) 48%, transparent), transparent 55%); animation: sweep 4s linear infinite; }
-.radar-dot { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--primary-2); box-shadow: 0 0 18px var(--primary-2); }
-.d1 { left: 30%; top: 38%; } .d2 { right: 28%; top: 55%; } .d3 { left: 50%; bottom: 26%; }
-@keyframes sweep { to { transform: rotate(360deg); } }
 
-/* AFSNIT 03 – Responsiv */
-@media (max-width: 1000px) {
-  .main-grid { grid-template-columns: 1fr; }
-  .side-column, .results-section, .status-grid { grid-column: 1; grid-row: auto; }
+.left, .right {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.search-card, .results-card, .side-card {
+  padding: 18px;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.stat {
+  padding: 16px;
+}
+
+.stat strong {
+  display: block;
+  color: var(--neon);
+  font-size: 1.35rem;
+}
+
+.stat span {
+  color: var(--muted);
+  font-size: .86rem;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: end;
+}
+
+.results-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+/* AFSNIT 03 – Radar */
+.radar {
+  justify-self: end;
+  align-self: center;
+  width: 210px;
+  height: 210px;
+  position: relative;
+  border-radius: 50%;
+  border: 1px solid rgba(80, 120, 255, .45);
+  background:
+    repeating-radial-gradient(circle, transparent 0 41px, rgba(0,184,255,.22) 42px 43px),
+    conic-gradient(from 260deg, rgba(39,255,210,.42), transparent 30%);
+}
+
+.radar::after {
+  content: "";
+  position: absolute;
+  inset: 50%;
+  width: 8px;
+  height: 8px;
+  transform: translate(-50%,-50%);
+  background: var(--neon);
+  border-radius: 50%;
+  box-shadow: 0 0 24px var(--neon);
+}
+
+.pulse-dot {
+  position: absolute;
+  left: 57%;
+  top: 75%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ok);
+  box-shadow: 0 0 18px var(--ok);
+}
+
+.radar-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-18%, -50%);
+  font-weight: 800;
+  color: var(--neon);
+  font-size: .8rem;
+}
+
+/* AFSNIT 04 – Mobil */
+@media (max-width: 920px) {
   .hero { grid-template-columns: 1fr; }
-  .radar-widget { min-height: 210px; }
+  .radar { justify-self: center; width: 170px; height: 170px; }
+  .grid { grid-template-columns: 1fr; }
+  .right { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); }
 }
 
-@media (max-width: 720px) {
-  .app-shell { width: min(100% - 18px, 1440px); padding-top: 9px; }
-  .topbar { top: 8px; border-radius: 22px; }
-  .brand small { display: none; }
-  .hero, .search-card, .results-section, .mini-panel { padding: 16px; }
-  .status-grid, .results-grid { grid-template-columns: 1fr; }
-  .results-top { align-items: stretch; flex-direction: column; }
+@media (max-width: 680px) {
+  .app-shell { width: min(100% - 18px, 1180px); }
+  .topbar { align-items: flex-start; }
+  .brand span { display: none; }
+  .stat-grid { grid-template-columns: repeat(2,1fr); }
+  .section-head { align-items: stretch; flex-direction: column; }
 }

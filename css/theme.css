@@ -1,84 +1,49 @@
-/* AFSNIT 01 – Farver og tema */
+/* AFSNIT 01 – Tema og farver */
 :root {
-  color-scheme: dark;
-  --font-main: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --radius-xl: 28px;
-  --radius-lg: 20px;
-  --shadow-soft: 0 24px 70px rgba(0, 0, 0, 0.35);
-  --transition: 180ms ease;
-}
-
-html[data-theme="dark"] {
-  --bg: #060816;
-  --bg-2: #0b1024;
-  --panel: rgba(16, 22, 48, 0.72);
-  --panel-strong: rgba(20, 29, 66, 0.92);
-  --text: #f4f8ff;
-  --muted: #a8b4d7;
-  --line: rgba(116, 137, 255, 0.24);
-  --primary: #00f5ff;
-  --primary-2: #42ff9e;
-  --accent: #ff3df2;
-  --warning: #ffd166;
+  --bg: #071023;
+  --bg-soft: #0b1630;
+  --card: rgba(14, 25, 55, 0.86);
+  --card-strong: rgba(17, 33, 72, 0.96);
+  --text: #f4f7ff;
+  --muted: #aab6d8;
+  --line: rgba(70, 111, 255, 0.34);
+  --neon: #27ffd2;
+  --neon-2: #00b8ff;
+  --accent: #9e6cff;
   --danger: #ff5470;
-  --success: #38f8a1;
-  --input-bg: rgba(5, 9, 28, 0.72);
-  --chip-bg: rgba(0, 245, 255, 0.10);
-  --card-glow: 0 0 32px rgba(0, 245, 255, 0.18);
+  --warn: #ffcd57;
+  --ok: #58ff9d;
+  --shadow: 0 24px 70px rgba(0,0,0,.35);
+  --radius: 22px;
 }
 
 html[data-theme="light"] {
-  color-scheme: light;
   --bg: #eef6ff;
-  --bg-2: #f9fcff;
-  --panel: rgba(255, 255, 255, 0.78);
-  --panel-strong: rgba(255, 255, 255, 0.95);
-  --text: #06172e;
-  --muted: #51617f;
-  --line: rgba(29, 92, 180, 0.20);
-  --primary: #006dff;
-  --primary-2: #00a86b;
-  --accent: #bb00ff;
-  --warning: #b46b00;
-  --danger: #d01943;
-  --success: #007c57;
-  --input-bg: rgba(255, 255, 255, 0.86);
-  --chip-bg: rgba(0, 109, 255, 0.10);
-  --card-glow: 0 0 28px rgba(0, 109, 255, 0.15);
+  --bg-soft: #dcefff;
+  --card: rgba(255,255,255,0.88);
+  --card-strong: rgba(255,255,255,0.98);
+  --text: #08152d;
+  --muted: #496077;
+  --line: rgba(0, 123, 255, 0.25);
+  --neon: #00bfa6;
+  --neon-2: #006dff;
+  --accent: #7148ff;
+  --shadow: 0 20px 50px rgba(0, 64, 120, .18);
 }
 
-/* AFSNIT 02 – Basis */
+/* AFSNIT 02 – Grundlayout */
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
 body {
-  min-height: 100vh;
   margin: 0;
-  font-family: var(--font-main);
-  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background:
-    radial-gradient(circle at 15% 10%, color-mix(in srgb, var(--primary) 20%, transparent), transparent 34%),
-    radial-gradient(circle at 90% 5%, color-mix(in srgb, var(--accent) 20%, transparent), transparent 30%),
-    linear-gradient(135deg, var(--bg), var(--bg-2));
+    radial-gradient(circle at 10% 10%, rgba(39,255,210,.12), transparent 28rem),
+    radial-gradient(circle at 100% 5%, rgba(158,108,255,.16), transparent 30rem),
+    linear-gradient(135deg, var(--bg), #050916);
+  color: var(--text);
+  min-height: 100vh;
 }
+
 button, input, select { font: inherit; }
 button { cursor: pointer; }
-button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid color-mix(in srgb, var(--primary) 58%, transparent); outline-offset: 3px; }
-
-/* AFSNIT 03 – Glas-paneler */
-.glass-panel {
-  border: 1px solid var(--line);
-  background: var(--panel);
-  box-shadow: var(--shadow-soft), var(--card-glow);
-  backdrop-filter: blur(18px);
-}
-
-.eyebrow {
-  margin: 0 0 8px;
-  color: var(--primary);
-  font-size: 0.77rem;
-  font-weight: 800;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-}
-
-.small-text { color: var(--muted); line-height: 1.6; }
+.hidden { display: none !important; }

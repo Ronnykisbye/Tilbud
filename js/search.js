@@ -1,123 +1,102 @@
-// AFSNIT 01 – Søgning, synonymer og scoring
-import { distanceKm, normalize } from "./geo.js";
+// AFSNIT 01 – Match, filtrering og sortering
+import { distanceKm } from "./geo.js";
 
-const PRODUCT_SYNONYMS = {
-  kaffe: ["kaffe", "bønner", "bonner", "hele bønner", "formalede", "merrild", "gevalia", "bki", "peter larsen", "lavazza", "barissimo"],
-  mælk: ["mælk", "maelk", "letmælk", "minimælk", "skummetmælk", "sødmælk", "arla"],
-  smør: ["smør", "smor", "lurpak", "kærgården", "kaergarden", "smørbar", "smoerbar"],
-  kylling: ["kylling", "kyllingebryst", "inderfilet", "kyllingelår", "kyllingelar", "fersk kylling"],
-  brød: ["brød", "brod", "rugbrød", "rugbrod", "toast", "boller"],
-  ost: ["ost", "danbo", "skæreost", "skaereost", "revet ost"],
-  cola: ["cola", "coca cola", "pepsi", "sodavand", "zero"],
-  æg: ["æg", "aeg", "økologiske æg", "okologiske aeg", "frilandsæg"],
-  pasta: ["pasta", "spaghetti", "penne", "lasagne"],
-  ris: ["ris", "jasminris", "basmati", "parboiled"]
+const SYNONYMS = {
+  kaffe: ["kaffe", "gevalia", "merrild", "bki", "nescafe", "hele bønner", "formal"],
+  mælk: ["mælk", "letmælk", "sødmælk", "minimælk"],
+  smør: ["smør", "lurpak", "kærgården", "smørbar"],
+  kylling: ["kylling", "kyllingebryst", "kyllingeinderfilet"],
+  cola: ["cola", "coca", "pepsi"],
+  rugbrød: ["rugbrød", "brød"],
+  ost: ["ost", "skiveost", "danbo"],
+  pasta: ["pasta", "spaghetti"]
 };
 
-// AFSNIT 02 – Hovedfunktion
-export function findOffers({ product, location, radiusKm, offers, stores, sortMode }) {
-  const productQuery = normalize(product);
-  const expandedQuery = expandQuery(productQuery);
-  const storeMap = new Map(stores.map(store => [store.id, store]));
-
-  const enriched = offers
-    .map(offer => buildOffer(offer, storeMap, location, productQuery, expandedQuery))
-    .filter(Boolean)
-    .filter(offer => offer.distance <= radiusKm)
-    .filter(offer => offer.matchScore > 0);
-
-  return sortOffers(enriched, sortMode);
+export function normalize(value) {
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .replace(/[^a-z0-9æøå\s]/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
-function buildOffer(offer, storeMap, location, productQuery, expandedQuery) {
-  const store = storeMap.get(offer.storeId);
-  if (!store) return null;
-  const distance = distanceKm(location, store);
-  const saving = Math.max(0, Number(offer.normalPrice || offer.price) - Number(offer.price));
-  const matchScore = scoreOffer(offer, productQuery, expandedQuery);
-  return { ...offer, store, distance, saving, matchScore };
-}
+export function productMatches(offer, productInput) {
+  const q = normalize(productInput);
+  if (!q) return true;
 
-// AFSNIT 03 – Bedre match på danske søgeord
-function scoreOffer(offer, query, expandedQuery) {
   const haystack = normalize([
-    offer.product,
+    offer.title,
     offer.brand,
     offer.category,
-    ...(offer.keywords || [])
-  ].join(" "));
+    offer.storeName,
+    offer.description
+  ].filter(Boolean).join(" "));
 
-  if (!query) return 1;
-  if (haystack === query) return 120;
-  if (haystack.includes(query)) return 100;
+  if (haystack.includes(q)) return true;
 
-  const queryParts = query.split(/\s+/).filter(Boolean);
-  const expandedParts = expandedQuery.split(/\s+/).filter(Boolean);
-  const allParts = [...new Set([...queryParts, ...expandedParts])].filter(part => part.length > 1);
+  const words = q.split(" ").filter(Boolean);
+  if (words.length && words.every(w => haystack.includes(w))) return true;
 
-  let score = 0;
-  allParts.forEach(part => {
-    if (haystack.includes(part)) score += queryParts.includes(part) ? 22 : 12;
-    else if (isNearWordMatch(part, haystack)) score += 8;
-  });
-
-  // Brand-match skal tælle højt, fordi brugeren ofte skriver fx Gevalia, Merrild eller BKI.
-  if (offer.brand && queryParts.includes(normalize(offer.brand))) score += 35;
-
-  // Kategori-match gør søgninger som "hele bønner" og "formalede" brugbare.
-  if (offer.category && expandedParts.includes(normalize(offer.category))) score += 26;
-
-  return score;
-}
-
-function expandQuery(query) {
-  const matches = [];
-  Object.entries(PRODUCT_SYNONYMS).forEach(([category, words]) => {
-    const normalizedWords = words.map(normalize);
-    const hit = normalizedWords.some(word => query.includes(word) || word.includes(query));
-    if (hit) matches.push(category, ...normalizedWords);
-  });
-  return [...new Set([query, ...matches])].join(" ");
-}
-
-function isNearWordMatch(part, haystack) {
-  const words = haystack.split(/\s+/).filter(Boolean);
-  return words.some(word => {
-    if (word.length < 4 || part.length < 4) return false;
-    return levenshtein(part, word) <= 1 || word.startsWith(part.slice(0, 4));
-  });
-}
-
-function levenshtein(a, b) {
-  const matrix = Array.from({ length: a.length + 1 }, (_, i) => [i]);
-  for (let j = 1; j <= b.length; j++) matrix[0][j] = j;
-  for (let i = 1; i <= a.length; i++) {
-    for (let j = 1; j <= b.length; j++) {
-      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-      matrix[i][j] = Math.min(
-        matrix[i - 1][j] + 1,
-        matrix[i][j - 1] + 1,
-        matrix[i - 1][j - 1] + cost
-      );
-    }
+  for (const [key, values] of Object.entries(SYNONYMS)) {
+    const all = [key, ...values].map(normalize);
+    const queryHitsGroup = all.some(word => q.includes(word));
+    const offerHitsGroup = all.some(word => haystack.includes(word));
+    if (queryHitsGroup && offerHitsGroup) return true;
   }
-  return matrix[a.length][b.length];
+
+  return false;
 }
 
-// AFSNIT 04 – Sortering
+export function enrichOffers(offers, stores, origin) {
+  return offers.map(offer => {
+    const store = stores.find(s => s.id === offer.storeId) || {
+      id: offer.storeId || offer.storeName || "ukendt",
+      name: offer.storeName || "Ukendt butik",
+      lat: origin.lat,
+      lng: origin.lng,
+      address: ""
+    };
+    const distance = distanceKm(origin, store);
+    return {
+      ...offer,
+      storeName: offer.storeName || store.name,
+      storeAddress: offer.storeAddress || store.address,
+      store,
+      distanceKm: distance,
+      saving: calcSaving(offer)
+    };
+  });
+}
+
+export function filterBySearch(offers, options) {
+  const radius = Number(options.radiusKm || 3);
+  return offers
+    .filter(offer => productMatches(offer, options.product))
+    .filter(offer => Number.isFinite(offer.distanceKm) ? offer.distanceKm <= radius : true);
+}
+
 export function sortOffers(offers, sortMode = "smart") {
   const copy = [...offers];
-  copy.sort((a, b) => {
-    if (sortMode === "price") return a.price - b.price;
-    if (sortMode === "distance") return a.distance - b.distance;
-    if (sortMode === "saving") return b.saving - a.saving;
-    const scoreA = smartScore(a);
-    const scoreB = smartScore(b);
-    return scoreB - scoreA;
+
+  if (sortMode === "price") return copy.sort((a,b) => priceValue(a) - priceValue(b));
+  if (sortMode === "distance") return copy.sort((a,b) => (a.distanceKm || 999) - (b.distanceKm || 999));
+  if (sortMode === "saving") return copy.sort((a,b) => (b.saving || 0) - (a.saving || 0));
+
+  return copy.sort((a,b) => {
+    const scoreA = priceValue(a) + (a.distanceKm || 0) * 1.7 - (a.saving || 0) * 0.18;
+    const scoreB = priceValue(b) + (b.distanceKm || 0) * 1.7 - (b.saving || 0) * 0.18;
+    return scoreA - scoreB;
   });
-  return copy;
 }
 
-function smartScore(offer) {
-  return (offer.matchScore * 10) - (offer.price * 1.6) - (offer.distance * 6) + (offer.saving * 4);
+export function priceValue(offer) {
+  return Number(offer.price || 999999);
+}
+
+function calcSaving(offer) {
+  const normal = Number(offer.normalPrice || 0);
+  const price = Number(offer.price || 0);
+  return normal > price ? Number((normal - price).toFixed(2)) : Number(offer.saving || 0);
 }

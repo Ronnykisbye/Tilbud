@@ -1,83 +1,230 @@
-/* AFSNIT 01 – Formular */
-.search-form { display: grid; gap: 15px; margin-top: 18px; }
-.field { display: grid; gap: 8px; color: var(--muted); font-weight: 750; }
-.field input, .sort-row select {
-  width: 100%;
-  min-height: 50px;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 0 14px;
-  color: var(--text);
-  background: var(--input-bg);
+/* AFSNIT 01 – Formularer */
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--neon-2);
+  font-size: .72rem;
+  font-weight: 900;
+  letter-spacing: .14em;
 }
-.radius-picker {
+
+h2, h3 { margin: 0 0 12px; }
+p { color: var(--muted); }
+
+form {
+  display: grid;
+  gap: 14px;
+}
+
+label span, legend, .sort-label span {
+  display: block;
+  color: var(--muted);
+  font-size: .82rem;
+  font-weight: 700;
+  margin-bottom: 7px;
+}
+
+input, select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--text);
+  background: rgba(4, 8, 24, .48);
+  padding: 12px 14px;
+  outline: none;
+}
+
+html[data-theme="light"] input,
+html[data-theme="light"] select {
+  background: rgba(240,247,255,.9);
+}
+
+input:focus, select:focus {
+  border-color: var(--neon);
+  box-shadow: 0 0 0 3px rgba(39,255,210,.15);
+}
+
+.radius-group {
+  border: 0;
+  padding: 0;
+  margin: 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 9px;
-  padding: 0;
-  border: 0;
+  gap: 8px;
+}
+
+.radius-group input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.radius-group label span {
+  display: block;
+  text-align: center;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--text);
   margin: 0;
 }
-.radius-picker legend { color: var(--muted); font-weight: 750; margin-bottom: 8px; }
-.radius-picker label { position: relative; }
-.radius-picker input { position: absolute; opacity: 0; }
-.radius-picker span {
-  display: grid;
-  place-items: center;
-  min-height: 44px;
-  border: 1px solid var(--line);
-  border-radius: 15px;
-  background: var(--input-bg);
-  color: var(--muted);
-  font-weight: 850;
+
+.radius-group input:checked + span {
+  background: linear-gradient(135deg, var(--neon), #38ffb7);
+  color: #03101a;
+  border-color: transparent;
+  box-shadow: 0 0 26px rgba(39,255,210,.35);
 }
-.radius-picker input:checked + span { color: #00111a; background: linear-gradient(135deg, var(--primary), var(--primary-2)); box-shadow: 0 0 18px color-mix(in srgb, var(--primary) 35%, transparent); }
-.form-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
 /* AFSNIT 02 – Knapper */
-.primary-btn, .secondary-btn, .icon-btn, .quick-products button, .favorite-btn, .chip-list button {
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  min-height: 44px;
-  padding: 0 14px;
-  color: var(--text);
-  background: var(--input-bg);
-  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+.button-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
-.primary-btn { color: #00111a; background: linear-gradient(135deg, var(--primary), var(--primary-2)); font-weight: 950; box-shadow: 0 0 24px color-mix(in srgb, var(--primary) 36%, transparent); }
-.search-submit-btn { font-size: 1.05rem; letter-spacing: 0.02em; }
-.secondary-btn, .icon-btn { font-weight: 850; }
-button:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--primary) 65%, var(--line)); box-shadow: 0 0 18px color-mix(in srgb, var(--primary) 22%, transparent); }
-.quick-products { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 16px; }
-.quick-products button { min-height: 38px; border-radius: 999px; color: var(--muted); }
 
-/* AFSNIT 03 – Resultatkort */
-.metric-card { border-radius: 22px; padding: 18px; }
-.metric-card span { display: block; font-size: 1.8rem; font-weight: 950; color: var(--primary); }
-.metric-card p { margin: 4px 0 0; color: var(--muted); }
-.message-box { padding: 14px; border: 1px dashed var(--line); border-radius: 18px; color: var(--muted); background: color-mix(in srgb, var(--panel-strong) 66%, transparent); }
-.offer-card { border: 1px solid var(--line); border-radius: 24px; padding: 16px; background: var(--panel-strong); box-shadow: var(--card-glow); }
-.offer-head { display: flex; gap: 12px; align-items: center; }
-.store-logo { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 15px; color: #00111a; background: linear-gradient(135deg, var(--accent), var(--primary)); font-weight: 950; }
-.offer-head h3 { margin: 0; font-size: 1.05rem; }
-.store-meta, .valid-to, .unit-price { color: var(--muted); font-size: 0.92rem; }
-.offer-product { margin: 14px 0; font-weight: 850; }
-.price-row { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; }
-.price { font-size: 2rem; letter-spacing: -0.05em; color: var(--primary-2); }
-.offer-tags { display: flex; flex-wrap: wrap; gap: 7px; margin: 12px 0; }
-.tag { padding: 7px 9px; border-radius: 999px; background: var(--chip-bg); color: var(--text); border: 1px solid var(--line); font-size: 0.82rem; font-weight: 800; }
-.tag.best { color: #00111a; background: linear-gradient(135deg, var(--warning), var(--primary-2)); }
-.offer-foot { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-top: 12px; }
-.favorite-btn { min-height: 38px; font-weight: 850; }
-.favorite-btn.saved { color: #00111a; background: linear-gradient(135deg, var(--primary), var(--primary-2)); }
-.sort-row { display: grid; gap: 6px; color: var(--muted); font-weight: 750; min-width: 180px; }
+button {
+  border: 0;
+  color: var(--text);
+  border-radius: 12px;
+  font-weight: 800;
+}
 
-/* AFSNIT 04 – Chips */
-.chip-list { display: flex; flex-wrap: wrap; gap: 9px; color: var(--muted); }
-.chip-list button { min-height: 36px; border-radius: 999px; }
-.chip-list.empty { display: block; }
+.primary {
+  padding: 13px 16px;
+  color: #03101a;
+  background: linear-gradient(135deg, var(--neon), #38ffb7);
+  box-shadow: 0 0 26px rgba(39,255,210,.28);
+}
 
-@media (max-width: 560px) {
-  .radius-picker, .form-actions { grid-template-columns: 1fr 1fr; }
-  .price { font-size: 1.7rem; }
+.ghost, .icon-btn, .quick-items button {
+  background: rgba(12, 27, 61, .7);
+  border: 1px solid var(--line);
+  padding: 11px 14px;
+}
+
+html[data-theme="light"] .ghost,
+html[data-theme="light"] .icon-btn,
+html[data-theme="light"] .quick-items button {
+  background: rgba(255,255,255,.78);
+}
+
+.small { padding: 8px 12px; font-size: .86rem; }
+.icon-btn { min-width: 46px; }
+
+.quick-items, .chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.quick-items button, .chip {
+  font-size: .82rem;
+  padding: 8px 12px;
+}
+
+.chip {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(12, 27, 61, .7);
+  color: var(--text);
+}
+
+.muted { color: var(--muted); font-size: .9rem; }
+
+/* AFSNIT 03 – Resultater */
+.status-box {
+  margin-top: 12px;
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  padding: 12px;
+  color: var(--muted);
+  background: rgba(0,0,0,.08);
+}
+
+.offer-card {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--card-strong);
+}
+
+.offer-top {
+  display: flex;
+  gap: 12px;
+  align-items: start;
+}
+
+.store-logo {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: linear-gradient(135deg, var(--neon-2), var(--accent));
+  color: white;
+  font-weight: 900;
+  flex: 0 0 auto;
+}
+
+.offer-title {
+  margin: 0;
+  font-weight: 900;
+}
+
+.offer-meta {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: .82rem;
+}
+
+.price {
+  color: var(--neon);
+  font-size: 1.7rem;
+  font-weight: 950;
+  margin: 14px 0 2px;
+}
+
+.unit {
+  color: var(--muted);
+  font-size: .82rem;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.badge {
+  font-size: .72rem;
+  font-weight: 900;
+  padding: 6px 8px;
+  border-radius: 999px;
+  background: rgba(0,184,255,.17);
+  border: 1px solid rgba(0,184,255,.28);
+}
+
+.badge.best {
+  background: rgba(39,255,210,.18);
+  border-color: rgba(39,255,210,.35);
+  color: var(--neon);
+}
+
+.offer-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.offer-actions button, .offer-actions a {
+  text-decoration: none;
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(12, 27, 61, .65);
+  padding: 8px 10px;
+  font-size: .82rem;
+  font-weight: 800;
 }

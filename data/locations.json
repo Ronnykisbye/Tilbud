@@ -1,102 +1,38 @@
 [
   {
     "name": "Helsingør",
+    "postalCode": "3000",
     "lat": 56.0361,
-    "lng": 12.6136,
-    "postcode": "3000",
-    "aliases": [
-      "helsingor",
-      "elsinore"
-    ]
+    "lng": 12.6136
   },
   {
     "name": "Snekkersten",
-    "lat": 56.009,
-    "lng": 12.589,
-    "postcode": "3070"
+    "postalCode": "3070",
+    "lat": 56.0093,
+    "lng": 12.5927
   },
   {
     "name": "Espergærde",
-    "lat": 55.9944,
-    "lng": 12.5477,
-    "postcode": "3060",
-    "aliases": [
-      "espergaerde"
-    ]
-  },
-  {
-    "name": "Hornbæk",
-    "lat": 56.0901,
-    "lng": 12.4564,
-    "postcode": "3100",
-    "aliases": [
-      "hornbaek"
-    ]
-  },
-  {
-    "name": "Hillerød",
-    "lat": 55.93,
-    "lng": 12.3028,
-    "postcode": "3400",
-    "aliases": [
-      "hilleroed"
-    ]
-  },
-  {
-    "name": "Fredensborg",
-    "lat": 55.9756,
-    "lng": 12.4031,
-    "postcode": "3480"
+    "postalCode": "3060",
+    "lat": 55.9936,
+    "lng": 12.5471
   },
   {
     "name": "København",
+    "postalCode": "1000",
     "lat": 55.6761,
-    "lng": 12.5683,
-    "postcode": "1000",
-    "aliases": [
-      "kobenhavn",
-      "copenhagen",
-      "nørreport",
-      "noerreport"
-    ]
-  },
-  {
-    "name": "Lyngby",
-    "lat": 55.7704,
-    "lng": 12.5038,
-    "postcode": "2800",
-    "aliases": [
-      "kongens lyngby"
-    ]
-  },
-  {
-    "name": "Roskilde",
-    "lat": 55.6419,
-    "lng": 12.0878,
-    "postcode": "4000"
+    "lng": 12.5683
   },
   {
     "name": "Aarhus",
+    "postalCode": "8000",
     "lat": 56.1629,
-    "lng": 10.2039,
-    "postcode": "8000",
-    "aliases": [
-      "århus"
-    ]
+    "lng": 10.2039
   },
   {
     "name": "Odense",
+    "postalCode": "5000",
     "lat": 55.4038,
-    "lng": 10.4024,
-    "postcode": "5000"
-  },
-  {
-    "name": "Aalborg",
-    "lat": 57.0488,
-    "lng": 9.9217,
-    "postcode": "9000",
-    "aliases": [
-      "ålborg"
-    ]
+    "lng": 10.4024
   }
 ]

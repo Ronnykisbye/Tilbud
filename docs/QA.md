@@ -1,34 +1,36 @@
-# QA – TilbudsRadar DK v1.1
+# Kvalitetssikring v1.3
 
-## Rettelser i denne version
-- De 4 hero-knapper/badges er fjernet, fordi de ikke havde funktion.
-- Appen laver ikke længere automatisk søgning ved opstart.
-- Hurtigvarer, favoritter og historik udfylder nu kun søgefeltet.
-- Appen søger først, når brugeren trykker på knappen **Søg**.
-- GPS-knappen vælger kun positionen og starter ikke søgning automatisk.
-- Sortering virker først efter en gennemført søgning.
+## Testet struktur
 
-## Manuel test
-1. Åbn `index.html` via lokal server eller GitHub Pages.
-2. Kontroller at de 4 hero-knapper ikke vises.
-3. Kontroller at resultatfeltet er tomt ved start.
-4. Skriv fx `kaffe` og `Helsingør`, vælg radius og tryk **Søg**.
-5. Kontroller at resultater, metrics, historik og favoritter opdateres.
-6. Klik på en hurtigvare og kontroller, at den ikke søger automatisk.
-7. Klik på en historik-chip og kontroller, at den ikke søger automatisk.
-8. Skift dag/nat-mode og kontroller kontrast.
+- `index.html` ligger i roden.
+- CSS er opdelt i:
+  - `theme.css`
+  - `layout.css`
+  - `components.css`
+- JavaScript er opdelt i:
+  - app-logik
+  - søgning
+  - geografi
+  - tema
+  - storage
+  - UI
+  - providers
+- Appen kan køre uden backend via demo-data.
+- Appen er forberedt til live-data via Cloudflare Worker.
+
+## Manuel test efter upload
+
+1. Åbn appen.
+2. Skriv `kaffe`.
+3. Skriv `Helsingør`.
+4. Vælg `3 km`.
+5. Tryk på **Søg**.
+6. Der skal vises tilbudskort.
+7. Skift til lys tilstand.
+8. Tryk på en hurtigvare.
+9. Der må ikke søges automatisk.
+10. Tryk på **Søg** igen.
 
 ## Kendt begrænsning
-Version 1.1 bruger stadig demo-data. Rigtige priser kræver senere API/backend.
 
-
-## QA – Version 1.2 søgefix
-
-Testet med følgende søgninger i Helsingør:
-
-- `Gevalia hele bønner` giver resultater.
-- `gevalia` giver resultater.
-- `hele bønner` giver kafferesultater.
-- `kaffe`, `mælk`, `smør`, `kylling`, `cola`, `æg` og `pasta` giver resultater i demo-data.
-- `3000` finder Helsingør som område.
-- Appen søger stadig først, når brugeren trykker på knappen Søg.
+Cloudflare Worker-parseren for Tilbudsugen er en defensiv HTML-parser. Den skal muligvis justeres, når vi har testet den rigtige response fra Worker i browseren.
