@@ -5,7 +5,7 @@ import { getTilbudsugenOffers } from "./tilbudsugenProvider.js";
 
 export async function getOffersFromBestSource(searchOptions) {
   if (CONFIG.dataMode === "demo") {
-    return getDemoOffers();
+    return getDemoOffers(searchOptions);
   }
 
   if (CONFIG.API_PROXY_URL) {
@@ -17,5 +17,5 @@ export async function getOffersFromBestSource(searchOptions) {
     }
   }
 
-  return getDemoOffers();
+  return getDemoOffers(searchOptions);
 }

@@ -1,5 +1,5 @@
 // AFSNIT 01 – Service worker
-const CACHE_NAME = "tilbudsradar-dk-v1-3-0";
+const CACHE_NAME = "tilbudsradar-dk-v1.4.0";
 const ASSETS = [
   "./",
   "./index.html",

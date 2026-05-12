@@ -5,3 +5,6 @@ Vigtigt:
 - Upload mapperne css, js, data, assets, docs og worker.
 - worker-mappen skal ikke bruges af GitHub Pages direkte. Den er en skabelon til Cloudflare Worker.
 - Efter upload: Ctrl + Shift + R i browseren.
+
+
+V1.4: Kildeknappen er rettet, så den åbner en søgning på hele den varetekst, brugeren har skrevet.

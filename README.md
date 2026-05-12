@@ -47,3 +47,7 @@ API_PROXY_URL: "https://tilbudsradar-proxy.ditnavn.workers.dev"
 ## Vigtigt
 
 Tilbudsugen-parseren er første tekniske forsøg. Hvis Tilbudsugen ændrer HTML, skal parseren justeres. Den professionelle løsning er senere at få adgang til officielle API'er som Tilbudsdata.dk eller Salling Group API.
+
+## Version 1.4
+
+Rettet: Kildeknappen bruger nu hele brugerens søgning, fx `gevalia kaffe helebønner`, i stedet for kun en bred kategori som `kaffe`. Appen søger stadig i demo-data, hvis live proxy/API ikke er tilkoblet.

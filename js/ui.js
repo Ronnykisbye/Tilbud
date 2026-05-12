@@ -35,12 +35,13 @@ export function renderOffers(offers) {
         ${isBest ? `<span class="badge best">Bedste pris</span>` : ""}
         ${offer.saving ? `<span class="badge">Spar ${formatPrice(offer.saving)}</span>` : ""}
         ${offer.source ? `<span class="badge">${escapeHtml(offer.source)}</span>` : ""}
+        ${offer.sourceQuery ? `<span class="badge">Søgning: ${escapeHtml(offer.sourceQuery)}</span>` : ""}
         ${valid ? `<span class="badge">${escapeHtml(valid)}</span>` : ""}
       </div>
 
       <div class="offer-actions">
         <button type="button" data-fav="${escapeHtmlAttr(offer.title || "")}">Gem</button>
-        ${offer.url ? `<a href="${escapeHtmlAttr(offer.url)}" target="_blank" rel="noopener">Åbn kilde</a>` : ""}
+        ${offer.url ? `<a href="${escapeHtmlAttr(offer.url)}" target="_blank" rel="noopener">Åbn søgning</a>` : ""}
       </div>
     `;
 

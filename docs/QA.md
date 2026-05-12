@@ -34,3 +34,11 @@
 ## Kendt begrænsning
 
 Cloudflare Worker-parseren for Tilbudsugen er en defensiv HTML-parser. Den skal muligvis justeres, når vi har testet den rigtige response fra Worker i browseren.
+
+
+## Version 1.4 – Kildeknap
+
+- Testet at demo-provider modtager brugerens søgetekst.
+- Testet at linket på tilbudskort bruger hele søgningen og ikke kun kategorien.
+- Testet at knappen nu hedder `Åbn søgning`, så det er tydeligt, at den åbner kildens søgeside.
+- Cache-version er hævet, så GitHub Pages lettere slipper den gamle version.

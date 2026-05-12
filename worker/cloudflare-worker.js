@@ -118,6 +118,7 @@ function parseTilbudsugenHtml(html, sourceUrl, query) {
       validTo: guessValidTo(chunk),
       source: "Tilbudsugen",
       url: sourceUrl,
+      sourceQuery: query,
       description: chunk.slice(0, 220)
     });
   }
