@@ -1,0 +1,21 @@
+TilbudsRadar DK v1.2 - ren GitHub Pages-pakke
+
+VIGTIGT:
+1. Gå ind i dit GitHub repository.
+2. Slet de gamle filer fra den anden app, så de ikke bliver blandet sammen.
+3. Upload ALLE filer og mapper fra denne pakke direkte i roden af repoet.
+4. index.html skal ligge i roden - ikke inde i en ekstra mappe.
+5. Efter upload: åbn siden og tryk Ctrl + Shift + R.
+
+Mapper/filer som skal ligge i repoets rod:
+- index.html
+- manifest.webmanifest
+- service-worker.js
+- README.md
+- css/
+- js/
+- data/
+- assets/
+- docs/
+
+Hvis noget stadig ser gammelt ud, skyldes det næsten altid browser-cache eller service-worker-cache.
