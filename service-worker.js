@@ -1,6 +1,6 @@
 // AFSNIT 01 – Simpel cache til GitHub Pages
-// Opdateret: manuel søgning + brugerens eget app-ikon
-const CACHE_NAME = "tilbudsradar-dk-v1-1-icon";
+// Opdateret: forbedret søgning, flere demo-varer, postnumre og fallback-radius
+const CACHE_NAME = "tilbudsradar-dk-v1-2-searchfix";
 const ASSETS = [
   "./",
   "index.html",

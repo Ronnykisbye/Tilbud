@@ -1,5 +1,13 @@
 # TilbudsRadar DK – version 1
 
+## Version 1.1 – ændringer
+
+- Fjernet de 4 øverste hero-knapper, som ikke havde funktion.
+- Appen søger ikke automatisk ved opstart.
+- Hurtigvarer, favoritter, historik og GPS starter ikke søgning automatisk.
+- Søgning sker kun, når brugeren trykker på **Søg**.
+
+
 En GitHub Pages-klar demo-app til lokale tilbud.
 
 ## Hvad appen kan nu
@@ -68,3 +76,22 @@ tilbudsradar-dk-v1/
 - Lav backend/proxy til rigtige tilbuds-API’er.
 - Tilføj kortvisning.
 - Tilføj prisalarm.
+
+
+## Ikon
+
+Appen bruger nu brugerens eget ikon fra `assets/icons/icon-128.ico`, konverteret til PNG-størrelserne 128x128, 192x192 og 512x512 til browser, mobil og PWA-installation.
+
+## Version 1.2 – Søgefix
+
+Denne version retter søgningen, så almindelige vareord, mærker og danske varianter giver resultater.
+
+Rettet:
+
+- Bedre søgning på mærker som Gevalia, Merrild, BKI og Lurpak.
+- Bedre søgning på varetyper som hele bønner, mælk, smør, cola, æg, pasta og ris.
+- Postnummer virker nu i områdefeltet, fx 3000 for Helsingør.
+- Hvis valgt radius ikke giver resultater, prøver appen automatisk 7 km én gang.
+- Flere demo-tilbud er tilføjet, så appen ikke virker tom i første version.
+
+Bemærk: Version 1.2 bruger stadig demo-data. Rigtige priser kræver næste trin med API/backend.

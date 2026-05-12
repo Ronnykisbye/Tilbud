@@ -13,12 +13,20 @@ function toRadians(value) {
   return value * Math.PI / 180;
 }
 
-// AFSNIT 02 – Find område
+// AFSNIT 02 – Find område med by, postnummer og alias
 export function findLocation(query, locations) {
   const normalized = normalize(query);
-  return locations.find(location => normalize(location.name) === normalized)
-    || locations.find(location => normalize(location.name).includes(normalized))
+  if (!normalized) return null;
+
+  return locations.find(location => locationTokens(location).includes(normalized))
+    || locations.find(location => locationTokens(location).some(token => token.includes(normalized) || normalized.includes(token)))
     || null;
+}
+
+function locationTokens(location) {
+  return [location.name, location.postcode, ...(location.aliases || [])]
+    .filter(Boolean)
+    .map(normalize);
 }
 
 export function normalize(text) {
@@ -26,5 +34,11 @@ export function normalize(text) {
     .trim()
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/ø/g, "o")
+    .replace(/æ/g, "ae")
+    .replace(/å/g, "a")
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }

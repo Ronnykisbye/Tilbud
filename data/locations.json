@@ -1,14 +1,102 @@
 [
-  { "name": "Helsingør", "lat": 56.0361, "lng": 12.6136 },
-  { "name": "Snekkersten", "lat": 56.0090, "lng": 12.5890 },
-  { "name": "Espergærde", "lat": 55.9944, "lng": 12.5477 },
-  { "name": "Hornbæk", "lat": 56.0901, "lng": 12.4564 },
-  { "name": "Hillerød", "lat": 55.9300, "lng": 12.3028 },
-  { "name": "Fredensborg", "lat": 55.9756, "lng": 12.4031 },
-  { "name": "København", "lat": 55.6761, "lng": 12.5683 },
-  { "name": "Lyngby", "lat": 55.7704, "lng": 12.5038 },
-  { "name": "Roskilde", "lat": 55.6419, "lng": 12.0878 },
-  { "name": "Aarhus", "lat": 56.1629, "lng": 10.2039 },
-  { "name": "Odense", "lat": 55.4038, "lng": 10.4024 },
-  { "name": "Aalborg", "lat": 57.0488, "lng": 9.9217 }
+  {
+    "name": "Helsingør",
+    "lat": 56.0361,
+    "lng": 12.6136,
+    "postcode": "3000",
+    "aliases": [
+      "helsingor",
+      "elsinore"
+    ]
+  },
+  {
+    "name": "Snekkersten",
+    "lat": 56.009,
+    "lng": 12.589,
+    "postcode": "3070"
+  },
+  {
+    "name": "Espergærde",
+    "lat": 55.9944,
+    "lng": 12.5477,
+    "postcode": "3060",
+    "aliases": [
+      "espergaerde"
+    ]
+  },
+  {
+    "name": "Hornbæk",
+    "lat": 56.0901,
+    "lng": 12.4564,
+    "postcode": "3100",
+    "aliases": [
+      "hornbaek"
+    ]
+  },
+  {
+    "name": "Hillerød",
+    "lat": 55.93,
+    "lng": 12.3028,
+    "postcode": "3400",
+    "aliases": [
+      "hilleroed"
+    ]
+  },
+  {
+    "name": "Fredensborg",
+    "lat": 55.9756,
+    "lng": 12.4031,
+    "postcode": "3480"
+  },
+  {
+    "name": "København",
+    "lat": 55.6761,
+    "lng": 12.5683,
+    "postcode": "1000",
+    "aliases": [
+      "kobenhavn",
+      "copenhagen",
+      "nørreport",
+      "noerreport"
+    ]
+  },
+  {
+    "name": "Lyngby",
+    "lat": 55.7704,
+    "lng": 12.5038,
+    "postcode": "2800",
+    "aliases": [
+      "kongens lyngby"
+    ]
+  },
+  {
+    "name": "Roskilde",
+    "lat": 55.6419,
+    "lng": 12.0878,
+    "postcode": "4000"
+  },
+  {
+    "name": "Aarhus",
+    "lat": 56.1629,
+    "lng": 10.2039,
+    "postcode": "8000",
+    "aliases": [
+      "århus"
+    ]
+  },
+  {
+    "name": "Odense",
+    "lat": 55.4038,
+    "lng": 10.4024,
+    "postcode": "5000"
+  },
+  {
+    "name": "Aalborg",
+    "lat": 57.0488,
+    "lng": 9.9217,
+    "postcode": "9000",
+    "aliases": [
+      "ålborg"
+    ]
+  }
 ]

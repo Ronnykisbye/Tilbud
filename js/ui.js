@@ -1,1 +1,85 @@
-const Ui={init(){this.el={form:document.getElementById("searchForm"),place:document.getElementById("placeInput"),year:document.getElementById("yearInput"),radius:document.getElementById("radiusInput"),limit:document.getElementById("limitInput"),status:document.getElementById("status"),summary:document.getElementById("resultSummary"),results:document.getElementById("results"),qa:document.getElementById("qaOutput"),mode:document.getElementById("modeBadge"),source:document.getElementById("sourcePill"),copy:document.getElementById("copyBtn"),open:document.getElementById("openBtn"),clear:document.getElementById("clearBtn"),qaBtn:document.getElementById("qaBtn"),theme:document.getElementById("themeToggle"),odense:document.getElementById("odenseBtn"),helsingor:document.getElementById("helsingorBtn")}},status(message){this.el.status.textContent=message},mode(message){this.el.mode.textContent=message;this.el.source.textContent=`Tilstand: ${message}`},loading(isLoading){const button=this.el.form.querySelector("button[type='submit']");button.textContent=isLoading?"Arbejder...":"Byg KB-link";button.disabled=isLoading},clear(){this.el.results.innerHTML=`<div class="empty">Ingen søgning endnu.</div>`;this.el.summary.textContent="Ingen søgning endnu.";this.el.copy.disabled=true;this.el.open.disabled=true},renderLinkResult(context){this.el.summary.textContent=`KB-link bygget for ${context.place.label}, cirka ${context.year}.`;this.el.results.innerHTML=`<div class="result-box"><h3>KB API-link klar</h3><p><strong>Sted:</strong> ${Utils.esc(context.place.label)}</p><p><strong>Fundet via:</strong> ${Utils.esc(context.place.source)}</p><p><strong>Koordinater:</strong> ${context.place.lat.toFixed(6)}, ${context.place.lon.toFixed(6)}</p><p><strong>Radius:</strong> ${Utils.esc(context.radius)} meter</p><p><strong>Cirka-år:</strong> ${Utils.esc(context.year)}</p><div class="code-link">${Utils.esc(context.kbUrl)}</div><div class="link-row"><a href="${Utils.esc(context.kbUrl)}" target="_blank" rel="noreferrer">Åbn KB API-resultater</a><a href="https://www.kb.dk/danmarksetfraluften/" target="_blank" rel="noreferrer">Åbn KB kort</a></div><p>Når API-linket åbner, kan browseren vise JSON-data direkte fra KB.</p></div>`;this.el.copy.disabled=false;this.el.open.disabled=false},qaReport(lines){this.el.qa.hidden=false;this.el.qa.innerHTML=lines.map(line=>`<div class="${line.ok?"ok":"warn"}">${line.ok?"✅":"⚠️"} ${Utils.esc(line.text)}</div>`).join("")},theme(){const current=document.documentElement.dataset.theme||"archive";const next=current==="archive"?"night":"archive";document.documentElement.dataset.theme=next;localStorage.setItem("luftfoto-theme",next)},savedTheme(){document.documentElement.dataset.theme=localStorage.getItem("luftfoto-theme")||"archive"}};
+// AFSNIT 01 – Formatering
+export function formatPrice(value) {
+  return new Intl.NumberFormat("da-DK", { style: "currency", currency: "DKK" }).format(Number(value || 0));
+}
+
+export function formatDistance(value) {
+  return `${Number(value).toFixed(value < 1 ? 2 : 1).replace(".", ",")} km`;
+}
+
+// AFSNIT 02 – Resultatkort
+export function renderOffers({ offers, container, template, favorites, onToggleFavorite }) {
+  container.innerHTML = "";
+  offers.forEach((offer, index) => {
+    const node = template.content.firstElementChild.cloneNode(true);
+    node.querySelector(".store-logo").textContent = initials(offer.store.chain);
+    node.querySelector("h3").textContent = offer.store.name;
+    node.querySelector(".store-meta").textContent = `${formatDistance(offer.distance)} · ${offer.store.address}`;
+    node.querySelector(".offer-product").textContent = offer.product;
+    node.querySelector(".price").textContent = formatPrice(offer.price);
+    node.querySelector(".unit-price").textContent = offer.unit || "";
+    node.querySelector(".valid-to").textContent = `Gyldig til ${formatDate(offer.validTo)}`;
+
+    const tags = node.querySelector(".offer-tags");
+    if (index === 0) tags.appendChild(createTag("Bedste valg", "best"));
+    if (offer.saving > 0) tags.appendChild(createTag(`Spar ${formatPrice(offer.saving)}`));
+    if (offer.distance <= 1) tags.appendChild(createTag("Tæt på"));
+    tags.appendChild(createTag(offer.store.chain));
+
+    const favBtn = node.querySelector(".favorite-btn");
+    const isSaved = favorites.includes(offer.product);
+    favBtn.textContent = isSaved ? "Gemt" : "Gem";
+    favBtn.classList.toggle("saved", isSaved);
+    favBtn.addEventListener("click", () => onToggleFavorite(offer.product));
+
+    container.appendChild(node);
+  });
+}
+
+function createTag(text, extraClass = "") {
+  const tag = document.createElement("span");
+  tag.className = `tag ${extraClass}`.trim();
+  tag.textContent = text;
+  return tag;
+}
+
+function initials(text) {
+  return String(text || "?")
+    .split(/\s+/)
+    .map(part => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+}
+
+function formatDate(date) {
+  if (!date) return "ukendt";
+  return new Intl.DateTimeFormat("da-DK", { day: "2-digit", month: "2-digit", year: "numeric" }).format(new Date(`${date}T12:00:00`));
+}
+
+// AFSNIT 03 – Chips og status
+export function renderChips(container, values, onClick) {
+  container.innerHTML = "";
+  container.classList.toggle("empty", values.length === 0);
+  if (!values.length) {
+    container.textContent = container.id === "favoritesList" ? "Ingen favoritter endnu." : "Ingen søgninger endnu.";
+    return;
+  }
+  values.forEach(value => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = value;
+    button.addEventListener("click", () => onClick(value));
+    container.appendChild(button);
+  });
+}
+
+export function updateMetrics({ offers, metricOffers, metricStores, metricBest, metricSaved }) {
+  const stores = new Set(offers.map(offer => offer.storeId));
+  const best = offers.length ? Math.min(...offers.map(offer => offer.price)) : null;
+  const saved = offers.length ? Math.max(...offers.map(offer => offer.saving)) : null;
+  metricOffers.textContent = offers.length;
+  metricStores.textContent = stores.size;
+  metricBest.textContent = best === null ? "–" : formatPrice(best);
+  metricSaved.textContent = saved === null ? "–" : formatPrice(saved);
+}
